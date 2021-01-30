@@ -5,8 +5,8 @@ QMAKE_CXXFLAGS += -std=c++17
 # RAYLIB_PATH = C:\raylib
 # High warnings levels
 # -Werror
-# QMAKE_CXXFLAGS += -Wall -Wextra -Wshadow -Wnon-virtual-dtor -pedantic -Weffc++
-# QMAKE_CXXFLAGS += -static-libgcc -static-libstdc++
+QMAKE_CXXFLAGS += -Wall -Wextra -Wshadow -Wnon-virtual-dtor -pedantic -Weffc++
+QMAKE_CXXFLAGS += -static-libgcc -static-libstdc++
 
 # QMAKE_CXX = C:/raylib/MinGW/bin/g++.exe
 # QMAKE_LINK = C:/raylib/MinGW/bin/ld
@@ -58,8 +58,10 @@ LIBS += -LC:\raylib\
 #  -lglfw3 -lopenal32
 
 SOURCES += \
+        core_3d_camera_first_person.cpp \
         core_basic_window.cpp \
         main.cpp
 
 HEADERS += \
+  core_3d_camera_first_person.h \
   core_basic_window.h
