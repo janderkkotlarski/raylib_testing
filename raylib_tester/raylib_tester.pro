@@ -60,8 +60,10 @@ LIBS += -LC:\raylib\
 SOURCES += \
         core_3d_camera_first_person.cpp \
         core_basic_window.cpp \
-        main.cpp
+        main.cpp \
+        shaders_fog.cpp
 
 HEADERS += \
   core_3d_camera_first_person.h \
-  core_basic_window.h
+  core_basic_window.h \
+  shaders_fog.h

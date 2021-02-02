@@ -10,6 +10,7 @@
 ********************************************************************************************/
 
 #include "raylib.h"
+#include "core_3d_camera_first_person.h"
 
 #define MAX_COLUMNS 20
 
