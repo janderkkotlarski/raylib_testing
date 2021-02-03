@@ -37,9 +37,16 @@ Image painter(const int image_size)
   return image;
 }
 
-void rotation(Vector3 &forward, Vector3 &upward)
+void rotation(Vector3 &position, Vector3 &upward)
 {
-  if (KeyboardKey::)
+  const float part
+  { 0.01f };
+
+  if (IsKeyDown('W'))
+  { position = Vector3Add(position, Vector3Scale(upward, part)); }
+
+  if (IsKeyDown('S'))
+  { position = Vector3Add(position, Vector3Scale(upward, -part)); }
 
 }
 
@@ -52,6 +59,9 @@ void shading()
   const int image_size
   { 400 }; // Size in pizels of the image of the texture
 
+  const float zero
+  { 0.0f };
+
   const float unit
   { 1.0f };
 
@@ -63,14 +73,20 @@ void shading()
   InitWindow(screen_size, screen_size, "Spheroid");
   // Initialize window with width and height in pixels and a text message.
 
-  const Vector3 position // Camera position
-  { unit, 0.0f, 0.0f };
+  const Vector3 center // Center of rotation and sphere
+  {zero, zero, zero };
 
-  const Vector3 forward // Position of forward direction
-  { 0.0f, 0.0f, 0.0f };
+  Vector3 position // Camera position
+  { unit, zero, zero };
 
-  const Vector3 upward // Position of upward direction
-  { 0.0f, 0.0f, unit };
+  Vector3 forward // Position of forward direction
+  { -unit, zero, zero };
+
+  Vector3 rightward // Position of rightward direction
+  { zero, unit, zero };
+
+  Vector3 upward // Position of upward direction
+  { zero, zero, unit };
 
   const float fov // Field of View
   { 45.0f };
@@ -94,6 +110,10 @@ void shading()
   // Main game loop
   while (!WindowShouldClose())            // Detect window close button or ESC key
   {
+    rotation(position, upward);
+    camera.position = position;
+    camera.up = upward;
+
     // Update
     //----------------------------------------------------------------------------------
     UpdateCamera(&camera);              // Update camera
