@@ -11,6 +11,8 @@
     #define GLSL_VERSION            100
 #endif
 
+
+
 Image painter(const int image_size)
 {
   Image image = GenImageColor(image_size, image_size, BLACK);
