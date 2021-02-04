@@ -37,17 +37,111 @@ Image painter(const int image_size)
   return image;
 }
 
-void rotation(Vector3 &position, Vector3 &upward)
+Vector3 delta_rotate(const Vector3 &vec_cos, const Vector3 &vec_sin)
 {
-  const float part
+  const float theta
   { 0.01f };
 
+  return Vector3Add(Vector3Scale(vec_cos, cos(theta)), Vector3Scale(vec_sin, sin(theta)));
+}
+
+void rotate(Vector3 &vec_x1, Vector3 &vec_y1)
+{
+  Vector3 vec_x2
+  { Vector3Normalize(delta_rotate(vec_x1, vec_y1)) };
+
+  Vector3 vec_y2
+  { Vector3Normalize(delta_rotate(vec_y1, Vector3Negate(vec_x1))) };
+
+  Vector3OrthoNormalize(&vec_x2, &vec_y2);
+
+  vec_x1 = vec_x2;
+  vec_y1 = vec_y2;
+}
+
+void movement(Vector3 &position, Vector3 &forward,
+              Vector3 &rightward, Vector3 &upward)
+{
   if (IsKeyDown('W'))
-  { position = Vector3Add(position, Vector3Scale(upward, part)); }
+  { rotate(position, upward); }
 
   if (IsKeyDown('S'))
-  { position = Vector3Add(position, Vector3Scale(upward, -part)); }
+  { rotate(upward, position); }
 
+  if (IsKeyDown('D'))
+  { rotate(position, rightward); }
+
+  if (IsKeyDown('A'))
+  { rotate(rightward, position); }
+
+  if (IsKeyDown('E'))
+  { rotate(upward, rightward); }
+
+  if (IsKeyDown('Q'))
+  { rotate(rightward, upward); }
+
+}
+
+std::string vector2string(const Vector3 &vec)
+noexcept
+{
+  std::string coords;
+
+  coords += "[" + std::to_string(vec.x) + "]";
+  coords += "[" + std::to_string(vec.y) + "]";
+  coords += "[" + std::to_string(vec.z) + "]";
+
+  return coords;
+}
+
+void display_string(const std::string str,
+                    const std::string &message,
+                    const int x,
+                    const int y,
+                    const int size)
+noexcept
+{
+  if (str.size() > 0)
+  {
+    std::string info_string
+    { str };
+
+    info_string += message;
+
+    const char *info_array
+    { info_string.c_str() };
+    DrawText(info_array, x, y, size, SKYBLUE);
+  }
+}
+
+void display_text(const Vector3 &center, const Vector3 &position,
+                  const Vector3 &forward, const Vector3 &rightward, const Vector3 &upward)
+{
+  const int x
+  { 20 };
+
+  int y
+  { 20 };
+
+  const int size
+  { 20 };
+
+  const int step
+  { 30 };
+
+  display_string("center:   ", vector2string(center), x, y, size);
+
+  y += step;
+  display_string("position:  ", vector2string(position), x, y, size);
+
+  y += step;
+  display_string("forward:   ", vector2string(forward), x, y, size);
+
+  y += step;
+  display_string("rightward: ", vector2string(rightward), x, y, size);
+
+  y += step;
+  display_string("upward:    ", vector2string(upward), x, y, size);
 }
 
 void shading()
@@ -66,7 +160,7 @@ void shading()
   { 1.0f };
 
   const float sphere_size
-  { 0.1f };
+  { 0.35f };
 
   SetConfigFlags(FLAG_MSAA_4X_HINT);  // Enable Multi Sampling Anti Aliasing 4x (if available)
 
@@ -110,8 +204,10 @@ void shading()
   // Main game loop
   while (!WindowShouldClose())            // Detect window close button or ESC key
   {
-    rotation(position, upward);
+    movement(position, forward, rightward, upward);
+
     camera.position = position;
+    camera.target = center;
     camera.up = upward;
 
     // Update
@@ -153,6 +249,8 @@ void shading()
         DrawModel(sphere, (Vector3){ 0.0f, 0.0f, 0.0f }, sphere_size, WHITE);
 
       EndMode3D();
+
+      display_text(center, position, forward, rightward, upward);
 
       // DrawText(TextFormat("Use KEY_UP/KEY_DOWN to change fog density [%.2f]", fogDensity), 10, 10, 20, RAYWHITE);
 
