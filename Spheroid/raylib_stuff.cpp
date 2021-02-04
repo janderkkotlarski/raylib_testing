@@ -40,7 +40,7 @@ Image painter(const int image_size)
 Vector3 delta_rotate(const Vector3 &vec_cos, const Vector3 &vec_sin)
 {
   const float theta
-  { 0.01f };
+  { 0.03f };
 
   return Vector3Add(Vector3Scale(vec_cos, cos(theta)), Vector3Scale(vec_sin, sin(theta)));
 }
@@ -189,7 +189,7 @@ void shading()
   { position, forward, upward,
     fov, CAMERA_PERSPECTIVE };
 
-  Model sphere = LoadModelFromMesh(GenMeshSphere(1.0f, 100, 100));
+  Model sphere = LoadModelFromMesh(GenMeshSphere(1.0f, 60, 60));
   // Initialize a sphere with a spherical mesh.
 
   Texture texture = LoadTextureFromImage(painter(image_size));
