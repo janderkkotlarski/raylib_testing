@@ -5,7 +5,13 @@
 
 #include "raylib.h"
 
-Vector3 vector3invert(Vector3 &vec);
+float square_dist(const float x1, const float y1,
+                  const float x2, const float y2)
+noexcept;
+
+int fractaler(float &xf, float &yf);
+
+Color color_mixer(const int x, const int y, const int image_size);
 
 Image painter(const int image_size);
 

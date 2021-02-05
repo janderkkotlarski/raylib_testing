@@ -1,5 +1,7 @@
 #include "raylib_stuff.h"
 
+#include <cassert>
+
 #include "raymath.h"
 
 #define RLIGHTS_IMPLEMENTATION
@@ -11,28 +13,102 @@
     #define GLSL_VERSION            100
 #endif
 
+float square_dist(const float x1, const float y1,
+                  const float x2, const float y2)
+noexcept
+{ return (x2 - x1)*(x2 - x1) + (y2 - y1)*(y2 - y1); }
 
+int fractaler(float &xf, float &yf)
+{
+  int count
+  { 0 };
+
+  const float real
+  { xf };
+
+  const float imag
+  { yf };
+
+  float xf2
+  { xf };
+
+  float yf2
+  { yf };
+
+  while (square_dist(xf, yf, xf2, yf2) <= 1.0f &&
+         count < 255)
+  {
+    xf2 = xf;
+    yf2 = yf;
+
+    xf = xf2*xf2 - yf2*yf2 + real;
+    yf = 2.0f*xf2*yf2 + imag;
+
+    ++count;
+  }
+
+  return count;
+}
+
+Color color_mixer(const int x, const int y, const int image_size)
+{
+  assert(x >= 0);
+  assert(y >= 0);
+  assert(image_size >= 0);
+  assert(x <= image_size);
+  assert(y <= image_size);
+
+  const float xmin
+  { 0.0f };
+
+  const float xmax
+  { 1.0f };
+
+  const float ymin
+  { -1.0f };
+
+  const float ymax
+  { 1.0f };
+
+  float xf
+  { xmin + (xmax - xmin)*float(x)/float(image_size) };
+
+  float yf
+  { ymin + (ymax - ymin)*float(y)/float(image_size) };
+
+  const int count
+  { fractaler(xf, yf) };
+
+  const float redf
+  { atan(xf)/PI + 0.5f };
+
+  const float greenf
+  { -atan(yf)/PI + 0.5f };
+
+  /// const float bluef
+  /// { 0.5f*(1.0f + cos(4*PI*xf)*cos(4*PI*yf)) };
+
+  Color dot;
+
+  dot.r = int(255.0f*redf);
+  dot.g = int(255.0f*greenf);
+  dot.b = count ;
+  dot.a = 255;
+
+  return dot;
+}
 
 Image painter(const int image_size)
 {
-  Image image = GenImageColor(image_size, image_size, BLACK);
+  Image image = GenImageColor(image_size, image_size, GREEN);
 
   for (int x{ 0 }; x < image_size; ++x)
   {
-    const int x_color
-    { int(255.0f*float(x)/float(image_size))};
-
     for (int y{ 0 }; y < image_size; ++y)
     {
-      const int y_color
-      { int(255.0f*float(y)/float(image_size))};
+      Color dot{ color_mixer(x, y, image_size) };
 
-      Color color{0, 127, 0, 255};
-
-      color.r = x_color;
-      color.b = y_color;
-
-      ImageDrawPixel(&image, x, y, color);
+      ImageDrawPixel(&image, x, y, dot);
     }
   }
 
@@ -153,7 +229,7 @@ void shading()
   { 800 }; // Size in pixels of the square screen
 
   const int image_size
-  { 400 }; // Size in pizels of the image of the texture
+  { 800 }; // Size in pizels of the image of the texture
 
   const float zero
   { 0.0f };
@@ -187,6 +263,7 @@ void shading()
   const float fov // Field of View
   { 45.0f };
 
+
   Camera camera // Initialize camera
   { position, forward, upward,
     fov, CAMERA_PERSPECTIVE };
@@ -206,6 +283,7 @@ void shading()
   // Main game loop
   while (!WindowShouldClose())            // Detect window close button or ESC key
   {
+
     movement(position, forward, rightward, upward);
 
     camera.position = position;
@@ -216,45 +294,20 @@ void shading()
     //----------------------------------------------------------------------------------
     UpdateCamera(&camera);              // Update camera
 
-    /*
-
-    if (IsKeyDown(KEY_UP))
-    {
-        fogDensity += 0.001;
-        if (fogDensity > 1.0) fogDensity = 1.0;
-    }
-
-    if (IsKeyDown(KEY_DOWN))
-    {
-        fogDensity -= 0.001;
-        if (fogDensity < 0.0) fogDensity = 0.0;
-    }
-
-    SetShaderValue(shader, fogDensityLoc, &fogDensity, UNIFORM_FLOAT);
-
-
-    // Update the light shader with the camera view position
-    SetShaderValue(shader, shader.locs[LOC_VECTOR_VIEW], &camera.position.x, UNIFORM_VEC3);
-    //----------------------------------------------------------------------------------
-
-    */
-
     // Draw
     //----------------------------------------------------------------------------------
     BeginDrawing();
 
-      ClearBackground(BLACK);
+    ClearBackground(BLACK);
 
-      BeginMode3D(camera);
+    BeginMode3D(camera);
 
         // Draw the three models
         DrawModel(sphere, (Vector3){ 0.0f, 0.0f, 0.0f }, sphere_size, WHITE);
 
-      EndMode3D();
+    EndMode3D();
 
-      display_text(center, position, forward, rightward, upward);
-
-      // DrawText(TextFormat("Use KEY_UP/KEY_DOWN to change fog density [%.2f]", fogDensity), 10, 10, 20, RAYWHITE);
+    display_text(center, position, forward, rightward, upward);
 
     EndDrawing();
     //----------------------------------------------------------------------------------
@@ -264,7 +317,6 @@ void shading()
   //--------------------------------------------------------------------------------------
   UnloadModel(sphere);        // Unload the model C
   UnloadTexture(texture);     // Unload the texture
-  // UnloadShader(shader);       // Unload shader
 
   CloseWindow();              // Close window and OpenGL context
   //--------------------------------------------------------------------------------------
