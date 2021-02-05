@@ -18,10 +18,21 @@ float square_dist(const float x1, const float y1,
 noexcept
 { return (x2 - x1)*(x2 - x1) + (y2 - y1)*(y2 - y1); }
 
+void heart_fractal(float &xf, float &yf,
+                   const float xf2, const float yf2,
+                   const float real, const float imag)
+{
+  xf = xf2*xf2 - yf2 + real;
+  yf = xf2*yf2 + imag;
+}
+
 int fractaler(float &xf, float &yf)
 {
   int count
   { 0 };
+
+  const int count_max
+  { 64 };
 
   const float real
   { xf };
@@ -35,14 +46,16 @@ int fractaler(float &xf, float &yf)
   float yf2
   { yf };
 
-  while (square_dist(xf, yf, xf2, yf2) <= 1.0f &&
-         count < 255)
+  const float dist_max
+  { 100.0f };
+
+  while (square_dist(real, imag, xf2, yf2) <= dist_max &&
+         count < count_max)
   {
     xf2 = xf;
     yf2 = yf;
 
-    xf = xf2*xf2 - yf2*yf2 + real;
-    yf = 2.0f*xf2*yf2 + imag;
+    heart_fractal(xf, yf, xf2, yf2, real, imag);
 
     ++count;
   }
@@ -71,10 +84,10 @@ Color color_mixer(const int x, const int y, const int image_size)
   { 1.0f };
 
   float xf
-  { xmin + (xmax - xmin)*float(x)/float(image_size) };
+  { -(xmin + (xmax - xmin)*float(x)/float(image_size)) };
 
   float yf
-  { ymin + (ymax - ymin)*float(y)/float(image_size) };
+  { abs(ymin + (ymax - ymin)*float(y)/float(image_size)) };
 
   const int count
   { fractaler(xf, yf) };
@@ -92,7 +105,7 @@ Color color_mixer(const int x, const int y, const int image_size)
 
   dot.r = int(255.0f*redf);
   dot.g = int(255.0f*greenf);
-  dot.b = count ;
+  dot.b = 4*count - 1 ;
   dot.a = 255;
 
   return dot;
@@ -229,7 +242,7 @@ void shading()
   { 800 }; // Size in pixels of the square screen
 
   const int image_size
-  { 800 }; // Size in pizels of the image of the texture
+  { 3200 }; // Size in pizels of the image of the texture
 
   const float zero
   { 0.0f };

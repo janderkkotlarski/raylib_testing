@@ -9,6 +9,10 @@ float square_dist(const float x1, const float y1,
                   const float x2, const float y2)
 noexcept;
 
+void heart_fractal(float &xf, float &yf,
+                   const float xf2, const float yf2,
+                   const float real, const float imag);
+
 int fractaler(float &xf, float &yf);
 
 Color color_mixer(const int x, const int y, const int image_size);
