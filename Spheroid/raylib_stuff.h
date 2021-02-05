@@ -13,6 +13,8 @@ void heart_fractal(float &xf, float &yf,
                    const float xf2, const float yf2,
                    const float real, const float imag);
 
+void polar_fractal(float &xf, float &yf);
+
 int fractaler(float &xf, float &yf);
 
 Color color_mixer(const int x, const int y, const int image_size);
