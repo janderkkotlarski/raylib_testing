@@ -26,10 +26,42 @@ void heart_fractal(float &xf, float &yf,
   yf = xf2*yf2 + imag;
 }
 
-void polar_fractal(float &xf, float &yf)
+void polar_globe(float &xf, float &yf)
 {
   xf = cos(256.0f*PI*xf);
   yf = cos(256.0f*PI*yf);
+}
+
+void renormalizer(float &xf, float &yf, const int x, const int y, const int image_size)
+{
+  const float xmin
+  { -1.0f };
+
+  const float xmax
+  { 1.0f };
+
+  const float ymin
+  { -1.0f };
+
+  const float ymax
+  { 1.0f };
+
+  xf = (xmin + (xmax - xmin)*float(x)/float(image_size));
+
+  yf = (ymin + (ymax - ymin)*float(y)/float(image_size));
+
+}
+
+Color colorizer(const float xf, const float yf)
+{
+  Color dot;
+
+  dot.r = int(255.0f*0.5f*(0.0f + 1.0f*yf));
+  dot.g = 0;
+  dot.b = 0;
+  dot.a = 255;
+
+  return dot;
 }
 
 int fractaler(float &xf, float &yf)
@@ -63,7 +95,7 @@ int fractaler(float &xf, float &yf)
 
     // heart_fractal(xf, yf, xf2, yf2, real, imag);
 
-    polar_fractal(xf, yf);
+    // polar_globe(xf, yf);
 
     ++count;
   }
@@ -79,44 +111,15 @@ Color color_mixer(const int x, const int y, const int image_size)
   assert(x <= image_size);
   assert(y <= image_size);
 
-  const float xmin
-  { -1.0f };
-
-  const float xmax
-  { 1.0f };
-
-  const float ymin
-  { -1.0f };
-
-  const float ymax
-  { 1.0f };
-
   float xf
-  { -(xmin + (xmax - xmin)*float(x)/float(image_size)) };
+  { 0.0f };
 
   float yf
-  { abs(ymin + (ymax - ymin)*float(y)/float(image_size)) };
+  { 0.0f };
 
-  const int count
-  { fractaler(xf, yf) };
+  renormalizer(xf, yf, x, y, image_size);
 
-  const float redf
-  { atan(xf)/PI + 0.5f };
-
-  const float greenf
-  { -atan(yf)/PI + 0.5f };
-
-  /// const float bluef
-  /// { 0.5f*(1.0f + cos(4*PI*xf)*cos(4*PI*yf)) };
-
-  Color dot;
-
-  dot.r = int(255.0f*redf);
-  dot.g = int(255.0f*greenf);
-  dot.b = 256*count - 1 ;
-  dot.a = 255;
-
-  return dot;
+  return colorizer(xf, yf);
 }
 
 Image painter(const int image_size)

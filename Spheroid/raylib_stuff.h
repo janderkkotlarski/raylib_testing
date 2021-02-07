@@ -13,7 +13,9 @@ void heart_fractal(float &xf, float &yf,
                    const float xf2, const float yf2,
                    const float real, const float imag);
 
-void polar_fractal(float &xf, float &yf);
+void polar_globe(float &xf, float &yf);
+
+void renormalizer(float &xf, float &yf, const int x, const int y, const int image_size);
 
 int fractaler(float &xf, float &yf);
 
