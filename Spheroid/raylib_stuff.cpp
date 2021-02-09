@@ -56,8 +56,8 @@ Color colorizer(const float xf, const float yf)
 {
   Color dot;
 
-  dot.r = int(255.0f*0.5f*(0.0f + 1.0f*yf));
-  dot.g = 0;
+  dot.r = 0*int(255.0f*0.5f*(1.0f + 1.0f*yf));
+  dot.g = int(255.0f*0.5f*(1.0f + 1.0f*xf));;
   dot.b = 0;
   dot.a = 255;
 
