@@ -54,6 +54,8 @@ float thetanizer(const int y, const int image_size);
 void rancords(float &phi, float &theta,
               const int image_size);
 
+Vector3 spherinizer(const float phi, const float theta);
+
 Image filling(const int image_size);
 
 #endif // RAYLIB_STUFF_H

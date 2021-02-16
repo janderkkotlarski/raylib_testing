@@ -293,6 +293,11 @@ void rancords(float &phi, float &theta,
    phi = phinizer(y, image_size);
 }
 
+Vector3 spherinizer(const float phi, const float theta)
+{
+  return { cos(theta)*cos(phi), cos(theta)*sin(phi), sin(theta) };
+}
+
 Image filling(const int image_size)
 {
   Image image
@@ -301,8 +306,16 @@ Image filling(const int image_size)
   const float tripe
   { 1.0f/sqrt(3.0f) };
 
-  const Vector3 tripel
-  { tripe, tripe, tripe };
+  float phi_ran
+  { 0 };
+
+  float theta_ran
+  { 0 };
+
+  rancords(phi_ran, theta_ran, image_size);
+
+  const Vector3 spherecoords
+  { spherinizer(phi_ran, theta_ran) };
 
   const float psi_max
   { 0.15f*PI };
@@ -324,7 +337,7 @@ Image filling(const int image_size)
       { cos(theta)*cos(phi), cos(theta)*sin(phi), sin(theta) };
 
       const float cos_psi
-      { Vector3DotProduct(tripel, spherical) };
+      { Vector3DotProduct(spherecoords, spherical) };
 
       const float psi
       { acos(cos_psi) };
