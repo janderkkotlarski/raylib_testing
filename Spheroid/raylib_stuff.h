@@ -49,6 +49,11 @@ bool spherical_circle();
 
 float phinizer(const int x, const int image_size);
 
+float thetanizer(const int y, const int image_size);
+
+void rancords(float &phi, float &theta,
+              const int image_size);
+
 Image filling(const int image_size);
 
 #endif // RAYLIB_STUFF_H

@@ -1,6 +1,7 @@
 #include "raylib_stuff.h"
 
 #include <cassert>
+#include <chrono>
 
 #include "raymath.h"
 
@@ -278,6 +279,20 @@ float thetanizer(const int y, const int image_size)
   return theta;
 }
 
+void rancords(float &phi, float &theta,
+              const int image_size)
+{
+   const int x
+   { int(std::chrono::system_clock::now().time_since_epoch().count()) % image_size };
+
+   theta = thetanizer(x, image_size);
+
+   const int y
+   { int(std::chrono::system_clock::now().time_since_epoch().count()) % image_size };
+
+   phi = phinizer(y, image_size);
+}
+
 Image filling(const int image_size)
 {
   Image image
@@ -305,9 +320,6 @@ Image filling(const int image_size)
       const Color dot
       { RED };
 
-      const Color dot2
-      { GREEN };
-
       const Vector3 spherical
       { cos(theta)*cos(phi), cos(theta)*sin(phi), sin(theta) };
 
@@ -319,9 +331,6 @@ Image filling(const int image_size)
 
       if (psi < psi_max)
       { ImageDrawPixel(&image, x, y, dot); }
-
-      if (psi > PI - psi_max)
-      { ImageDrawPixel(&image, x, y, dot2); }
     }
   }
 
