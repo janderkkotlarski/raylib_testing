@@ -245,22 +245,83 @@ void display_text(const Vector3 &center, const Vector3 &position,
   display_string("upward:    ", vector2string(upward), x, y, size);
 }
 
+bool spherical_circle()
+{
+  return false;
+}
 
+float phinizer(const int x, const int image_size)
+{
+  const float phi_min
+  { -PI };
+
+  const float phi_range
+  { 2.0f*PI };
+
+  const float phi
+  { phi_min + phi_range*float(x)/float(image_size) };
+
+  return phi;
+}
+
+float thetanizer(const int y, const int image_size)
+{
+  const float theta_min
+  { -0.5f*PI };
+
+  const float theta_range
+  { PI };
+
+  const float theta
+  { theta_min + theta_range*float(y)/float(image_size) };
+
+  return theta;
+}
 
 Image filling(const int image_size)
 {
   Image image
-  { GenImageColor(image_size, image_size, GREEN) };
+  { GenImageColor(image_size, image_size, BLACK) };
+
+  const float tripe
+  { 1.0f/sqrt(3.0f) };
+
+  const Vector3 tripel
+  { tripe, tripe, tripe };
+
+  const float psi_max
+  { 0.15f*PI };
 
   for (int x{ 0 }; x < image_size; ++x)
   {
+    const float theta
+    { thetanizer(x, image_size) };
+
     for (int y{ 0 }; y < image_size; ++y)
     {
-      Color dot
+      const float phi
+      { phinizer(y, image_size) };
+
+      const Color dot
       { RED };
 
-      if (true)
+      const Color dot2
+      { GREEN };
+
+      const Vector3 spherical
+      { cos(theta)*cos(phi), cos(theta)*sin(phi), sin(theta) };
+
+      const float cos_psi
+      { Vector3DotProduct(tripel, spherical) };
+
+      const float psi
+      { acos(cos_psi) };
+
+      if (psi < psi_max)
       { ImageDrawPixel(&image, x, y, dot); }
+
+      if (psi > PI - psi_max)
+      { ImageDrawPixel(&image, x, y, dot2); }
     }
   }
 
@@ -305,11 +366,7 @@ void shading()
   Vector3 upward // Position of upward direction
   { zero, zero, unit };
 
-  const float tripe
-  { 1.0f/sqrt(3.0f) };
 
-  const Vector3 tripel
-  { tripe, tripe, tripe };
 
   const float phi_min
   { -PI };
