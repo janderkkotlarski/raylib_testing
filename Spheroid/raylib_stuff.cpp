@@ -35,21 +35,20 @@ void polar_globe(float &xf, float &yf)
 void renormalizer(float &xf, float &yf, const int x, const int y, const int image_size)
 {
   const float xmin
-  { -1.0f };
+  { -0.5f*PI };
 
   const float xmax
-  { 1.0f };
+  { 0.5f*PI };
 
   const float ymin
-  { -1.0f };
+  { -PI };
 
   const float ymax
-  { 1.0f };
+  { PI };
 
   xf = (xmin + (xmax - xmin)*float(x)/float(image_size));
 
   yf = (ymin + (ymax - ymin)*float(y)/float(image_size));
-
 }
 
 Color colorizer(const float xf, const float yf)
@@ -246,6 +245,28 @@ void display_text(const Vector3 &center, const Vector3 &position,
   display_string("upward:    ", vector2string(upward), x, y, size);
 }
 
+
+
+Image filling(const int image_size)
+{
+  Image image
+  { GenImageColor(image_size, image_size, GREEN) };
+
+  for (int x{ 0 }; x < image_size; ++x)
+  {
+    for (int y{ 0 }; y < image_size; ++y)
+    {
+      Color dot
+      { RED };
+
+      if (true)
+      { ImageDrawPixel(&image, x, y, dot); }
+    }
+  }
+
+  return image;
+}
+
 void shading()
 {
 
@@ -284,6 +305,24 @@ void shading()
   Vector3 upward // Position of upward direction
   { zero, zero, unit };
 
+  const float tripe
+  { 1.0f/sqrt(3.0f) };
+
+  const Vector3 tripel
+  { tripe, tripe, tripe };
+
+  const float phi_min
+  { -PI };
+
+  const float phi_max
+  { PI };
+
+  const float theta_min
+  { -0.5f*PI };
+
+  const float theta_max
+  { 0.5f*PI };
+
   const float fov // Field of View
   { 45.0f };
 
@@ -295,7 +334,7 @@ void shading()
   Model sphere = LoadModelFromMesh(GenMeshSphere(1.0f, 60, 60));
   // Initialize a sphere with a spherical mesh.
 
-  Texture texture = LoadTextureFromImage(painter(image_size));
+  Texture texture = LoadTextureFromImage(filling(image_size));
   // Assign texture to default model material
   sphere.materials[0].maps[MAP_DIFFUSE].texture = texture;
 

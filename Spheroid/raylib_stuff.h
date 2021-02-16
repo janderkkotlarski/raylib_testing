@@ -45,4 +45,6 @@ noexcept;
 void display_text(const Vector3 &center, const Vector3 &position,
                   const Vector3 &forward, const Vector3 &rightward, const Vector3 &upward);
 
+Image filling(const int image_size);
+
 #endif // RAYLIB_STUFF_H
