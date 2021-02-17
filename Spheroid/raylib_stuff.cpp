@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <chrono>
+#include <vector>
 
 #include "raymath.h"
 
@@ -192,13 +193,35 @@ Image filling(const int image_size)
   float theta_ran
   { 0 };
 
-  rancords(phi_ran, theta_ran, image_size);
+  const int dot_count
+  { 10 };
+
+  std::vector <float> phi_rans;
+
+  std::vector <float> theta_rans;
+
+  std::vector <Vector3> dotcoords;
+
+  for (unsigned count{ 0 }; count < dot_count; ++count)
+  {
+    rancords(phi_ran, theta_ran, image_size);
+
+    phi_rans.push_back(phi_ran);
+
+    theta_rans.push_back(theta_ran);
+
+    dotcoords.push_back(spherinizer(phi_ran, theta_ran));
+  }
+
+
+
+  // rancords(phi_ran, theta_ran, image_size);
 
   const Vector3 spherecoords
   { spherinizer(phi_ran, theta_ran) };
 
   const float psi_max
-  { 0.15f*PI };
+  { 0.05f*PI };
 
   for (int x{ 0 }; x < image_size; ++x)
   {
@@ -214,16 +237,19 @@ Image filling(const int image_size)
       { RED };
 
       const Vector3 spherical
-      { cos(theta)*cos(phi), cos(theta)*sin(phi), sin(theta) };
+      { spherinizer(phi, theta) };
 
-      const float cos_psi
-      { Vector3DotProduct(spherecoords, spherical) };
+      for (const Vector3 coords: dotcoords)
+      {
+        const float cos_psi
+        { Vector3DotProduct(coords, spherical) };
 
-      const float psi
-      { acos(cos_psi) };
+        const float psi
+        { acos(cos_psi) };
 
-      if (psi < psi_max)
-      { ImageDrawPixel(&image, x, y, dot); }
+        if (psi < psi_max)
+        { ImageDrawPixel(&image, x, y, dot); }
+      }
     }
   }
 

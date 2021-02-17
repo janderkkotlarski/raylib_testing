@@ -55,8 +55,10 @@ LIBS += -LC:\raylib\raylib
 LIBS += -LC:\raylib\
 
 SOURCES += \
+        auronacci.cpp \
         main.cpp \
         raylib_stuff.cpp
 
 HEADERS += \
+  auronacci.h \
   raylib_stuff.h
