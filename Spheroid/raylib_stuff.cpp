@@ -6,6 +6,8 @@
 
 #include "raymath.h"
 
+#include "auronacci.h"
+
 #define RLIGHTS_IMPLEMENTATION
 // #include "rlights.h"
 
@@ -163,15 +165,19 @@ float thetanizer(const int y, const int image_size)
 void rancords(float &phi, float &theta,
               const int image_size)
 {
-   const int x
-   { int(std::chrono::system_clock::now().time_since_epoch().count()) % image_size };
+  auronacci gold;
 
-   theta = thetanizer(x, image_size);
+  const int x
+  { gold.get_number() % image_size };
 
-   const int y
-   { int(std::chrono::system_clock::now().time_since_epoch().count()) % image_size };
+  gold.cycle(100);
 
-   phi = phinizer(y, image_size);
+  theta = thetanizer(x, image_size);
+
+  const int y
+  { gold.get_number() % image_size };
+
+  phi = phinizer(y, image_size);
 }
 
 Vector3 spherinizer(const float phi, const float theta)
@@ -239,7 +245,7 @@ Image filling(const int image_size)
       const Vector3 spherical
       { spherinizer(phi, theta) };
 
-      for (const Vector3 coords: dotcoords)
+      for (const Vector3 &coords: dotcoords)
       {
         const float cos_psi
         { Vector3DotProduct(coords, spherical) };
