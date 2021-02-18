@@ -5,6 +5,8 @@
 
 #include "raylib.h"
 
+#include "auronacci.h"
+
 Vector3 delta_rotate(const Vector3 &vec_cos, const Vector3 &vec_sin);
 
 void rotate(Vector3 &vec_x1, Vector3 &vec_y1);
@@ -32,9 +34,13 @@ float phinizer(const int x, const int image_size);
 float thetanizer(const int y, const int image_size);
 
 void rancords(float &phi, float &theta,
-              const int image_size);
+              const int image_size,
+              auronacci &gold);
 
 Vector3 spherinizer(const float phi, const float theta);
+
+void compare_psi(Image &image, const int x, const int y,
+                 const float psi, const float psi_max);
 
 Image filling(const int image_size);
 

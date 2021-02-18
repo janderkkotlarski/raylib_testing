@@ -6,8 +6,6 @@
 
 #include "raymath.h"
 
-#include "auronacci.h"
-
 #define RLIGHTS_IMPLEMENTATION
 // #include "rlights.h"
 
@@ -163,10 +161,9 @@ float thetanizer(const int y, const int image_size)
 }
 
 void rancords(float &phi, float &theta,
-              const int image_size)
+              const int image_size,
+              auronacci &gold)
 {
-  auronacci gold;
-
   const int x
   { gold.get_number() % image_size };
 
@@ -185,8 +182,35 @@ Vector3 spherinizer(const float phi, const float theta)
   return { cos(theta)*cos(phi), cos(theta)*sin(phi), sin(theta) };
 }
 
+void compare_psi(Image &image, const int x, const int y,
+                 const float psi, const float psi_max)
+{
+  if (psi < 0.1f*psi_max)
+  { ImageDrawPixel(&image, x, y, WHITE); }
+  else if (psi < 0.2f*psi_max)
+  { ImageDrawPixel(&image, x, y, PURPLE); }
+  else if (psi < 0.3f*psi_max)
+  { ImageDrawPixel(&image, x, y, VIOLET); }
+  else if (psi < 0.4f*psi_max)
+  { ImageDrawPixel(&image, x, y, BLUE); }
+  else if (psi < 0.5f*psi_max)
+  { ImageDrawPixel(&image, x, y, Color{ 0, 255, 255, 255 }); }
+  else if (psi < 0.6f*psi_max)
+  { ImageDrawPixel(&image, x, y, GREEN); }
+  else if (psi < 0.7f*psi_max)
+  { ImageDrawPixel(&image, x, y, YELLOW); }
+  else if (psi < 0.8f*psi_max)
+  { ImageDrawPixel(&image, x, y, ORANGE); }
+  else if (psi < 0.9f*psi_max)
+  { ImageDrawPixel(&image, x, y, RED); }
+  else if (psi < 1.0f*psi_max)
+  { ImageDrawPixel(&image, x, y, GRAY); }
+}
+
 Image filling(const int image_size)
 {
+  auronacci gold;
+
   Image image
   { GenImageColor(image_size, image_size, BLACK) };
 
@@ -210,7 +234,7 @@ Image filling(const int image_size)
 
   for (unsigned count{ 0 }; count < dot_count; ++count)
   {
-    rancords(phi_ran, theta_ran, image_size);
+    rancords(phi_ran, theta_ran, image_size, gold);
 
     phi_rans.push_back(phi_ran);
 
@@ -218,13 +242,6 @@ Image filling(const int image_size)
 
     dotcoords.push_back(spherinizer(phi_ran, theta_ran));
   }
-
-
-
-  // rancords(phi_ran, theta_ran, image_size);
-
-  const Vector3 spherecoords
-  { spherinizer(phi_ran, theta_ran) };
 
   const float psi_max
   { 0.05f*PI };
@@ -239,9 +256,6 @@ Image filling(const int image_size)
       const float phi
       { phinizer(y, image_size) };
 
-      const Color dot
-      { RED };
-
       const Vector3 spherical
       { spherinizer(phi, theta) };
 
@@ -253,8 +267,7 @@ Image filling(const int image_size)
         const float psi
         { acos(cos_psi) };
 
-        if (psi < psi_max)
-        { ImageDrawPixel(&image, x, y, dot); }
+        compare_psi(image, x, y, psi, psi_max);
       }
     }
   }
