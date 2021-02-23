@@ -2,6 +2,7 @@
 #define RAYLIB_STUFF_H
 
 #include <string>
+#include <vector>
 
 #include "raylib.h"
 
@@ -41,6 +42,8 @@ Vector3 spherinizer(const float phi, const float theta);
 
 void compare_psi(Image &image, const int x, const int y,
                  const float psi, const float psi_max);
+
+std::vector <Vector3> dot_coordinator(const int image_size);
 
 Image filling(const int image_size);
 

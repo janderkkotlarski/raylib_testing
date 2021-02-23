@@ -2,7 +2,6 @@
 
 #include <cassert>
 #include <chrono>
-#include <vector>
 
 #include "raymath.h"
 
@@ -207,15 +206,37 @@ void compare_psi(Image &image, const int x, const int y,
   { ImageDrawPixel(&image, x, y, GRAY); }
 }
 
+std::vector <Vector3> dot_coordinator(const int image_size)
+{
+  const unsigned amount
+  { 10 };
+
+  float phi_ran
+  { 0 };
+
+  float theta_ran
+  { 0 };
+
+  auronacci gold;
+
+  std::vector <Vector3> dotcoords;
+
+  for (unsigned count{ 0 }; count < amount; ++count)
+  {
+    rancords(phi_ran, theta_ran, image_size, gold);
+
+    dotcoords.push_back(spherinizer(phi_ran, theta_ran));
+  }
+
+  return dotcoords;
+}
+
 Image filling(const int image_size)
 {
-  auronacci gold;
+
 
   Image image
   { GenImageColor(image_size, image_size, BLACK) };
-
-  const float tripe
-  { 1.0f/sqrt(3.0f) };
 
   float phi_ran
   { 0 };
@@ -226,25 +247,23 @@ Image filling(const int image_size)
   const int dot_count
   { 10 };
 
-  std::vector <float> phi_rans;
+  const Vector3 up_north
+  { 0.0f, 0.0f, 1.0f };
 
-  std::vector <float> theta_rans;
-
-  std::vector <Vector3> dotcoords;
-
-  for (unsigned count{ 0 }; count < dot_count; ++count)
-  {
-    rancords(phi_ran, theta_ran, image_size, gold);
-
-    phi_rans.push_back(phi_ran);
-
-    theta_rans.push_back(theta_ran);
-
-    dotcoords.push_back(spherinizer(phi_ran, theta_ran));
-  }
+  std::vector <Vector3> dotcoords
+  { dot_coordinator(image_size) };
 
   const float psi_max
   { 0.05f*PI };
+
+  const float spike_fraction
+  { 0.7 };
+
+  const float mult
+  { 2.5f };
+
+  const float power
+  { 10.0f };
 
   for (int x{ 0 }; x < image_size; ++x)
   {
@@ -259,15 +278,29 @@ Image filling(const int image_size)
       const Vector3 spherical
       { spherinizer(phi, theta) };
 
+
+
       for (const Vector3 &coords: dotcoords)
       {
+        const Vector3 north_perp
+        { Vector3Normalize(Vector3CrossProduct(coords, up_north)) };
+
+        const Vector3 spheri_perp
+        { Vector3Normalize(Vector3CrossProduct(coords, spherical)) };
+
+        const float cos_perp
+        { Vector3DotProduct(north_perp, spheri_perp) };
+
+        const float cos_perp_abc
+        { pow(abs(cos(mult*acos(cos_perp))), power) };
+
         const float cos_psi
         { Vector3DotProduct(coords, spherical) };
 
         const float psi
         { acos(cos_psi) };
 
-        compare_psi(image, x, y, psi, psi_max);
+        compare_psi(image, x, y, psi, ((1.0 - spike_fraction) + spike_fraction*cos_perp_abc)*psi_max);
       }
     }
   }
@@ -342,15 +375,12 @@ void shading()
   // Assign texture to default model material
   sphere.materials[0].maps[MAP_DIFFUSE].texture = texture;
 
-
-
   SetTargetFPS(60);                       // Set our game to run at 60 frames-per-second
   //--------------------------------------------------------------------------------------
 
   // Main game loop
   while (!WindowShouldClose())            // Detect window close button or ESC key
   {
-
     movement(position, forward, rightward, upward);
 
     camera.position = position;
