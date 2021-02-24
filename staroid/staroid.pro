@@ -55,8 +55,10 @@ LIBS += -LC:\raylib\raylib
 LIBS += -LC:\raylib\
 
 SOURCES += \
+        loop.cpp \
         main.cpp \
         staroid.cpp
 
 HEADERS += \
+  loop.h \
   staroid.h
