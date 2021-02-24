@@ -233,10 +233,11 @@ std::vector <Vector3> dot_coordinator(const int image_size)
 
 Image filling(const int image_size)
 {
-
+  const Color color
+  { 0, 0, 0, 0 };
 
   Image image
-  { GenImageColor(image_size, image_size, BLACK) };
+  { GenImageColor(image_size, image_size, color) };
 
   float phi_ran
   { 0 };
@@ -254,16 +255,16 @@ Image filling(const int image_size)
   { dot_coordinator(image_size) };
 
   const float psi_max
-  { 0.05f*PI };
+  { 0.15f*PI };
 
   const float spike_fraction
-  { 0.7 };
+  { 0.5f };
 
   const float mult
-  { 2.5f };
+  { 3.0f };
 
   const float power
-  { 10.0f };
+  { 20.0f };
 
   for (int x{ 0 }; x < image_size; ++x)
   {
@@ -371,8 +372,9 @@ void shading()
   Model sphere = LoadModelFromMesh(GenMeshSphere(1.0f, 60, 60));
   // Initialize a sphere with a spherical mesh.
 
-  Texture texture = LoadTextureFromImage(filling(image_size));
+  const Texture texture = LoadTextureFromImage(filling(image_size));
   // Assign texture to default model material
+
   sphere.materials[0].maps[MAP_DIFFUSE].texture = texture;
 
   SetTargetFPS(60);                       // Set our game to run at 60 frames-per-second
@@ -398,10 +400,11 @@ void shading()
     ClearBackground(BLACK);
 
     BeginMode3D(camera);
+    {
 
-        // Draw the three models
-        DrawModel(sphere, (Vector3){ 0.0f, 0.0f, 0.0f }, sphere_size, WHITE);
+      DrawModel(sphere, (Vector3){ 0.0f, 0.0f, 0.0f }, sphere_size, WHITE);
 
+    }
     EndMode3D();
 
     display_text(center, position, forward, rightward, upward);
