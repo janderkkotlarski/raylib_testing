@@ -23,13 +23,19 @@ void loop()
   InitWindow(screenWidth, screenHeight, "STAROID");
 
   Vector3 cam_pos
-  { 4.0f, 4.0f, 4.0f };
+  { 4.0f, 0.0f, 0.0f };
+
+  Vector3 cam_target
+  { 0.0f, 0.0f, 0.0f };
+
+  Vector3 cam_up
+  { 0.0f, 0.0f, 1.0f };
 
   Camera camera
   { 0 };
   camera.position = cam_pos;    // Camera position
-  camera.target = (Vector3){ 0.0f, 0.0f, 0.0f };      // Camera looking at point
-  camera.up = (Vector3){ 0.0f, 0.0f, 1.0f };          // Camera up vector (rotation towards target)
+  camera.target = cam_target;      // Camera looking at point
+  camera.up = cam_up;          // Camera up vector (rotation towards target)
   camera.fovy = 45.0f;                                // Camera field-of-view Y
   camera.type = CAMERA_PERSPECTIVE;                   // Camera mode type
 
@@ -58,7 +64,7 @@ void loop()
   std::vector <Vector3> positions
   {
     { 0.0f, 0.0f, 0.0f },
-    { 1.0f, 0.0f, 1.0f }
+    { 0.0f, 1.0f, 1.0f }
   };
 
   const float factor
@@ -83,7 +89,7 @@ void loop()
   model.materials[0].shader = shader;
 
   Light light
-  { CreateLight(LIGHT_POINT, cam_pos, Vector3Zero(), WHITE, shader) };
+  { CreateLight(LIGHT_POINT, cam_pos, cam_target, WHITE, shader) };
 
   SetTargetFPS(60);                       // Set our game to run at 60 frames-per-second
   //--------------------------------------------------------------------------------------
