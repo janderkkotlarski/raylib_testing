@@ -8,6 +8,8 @@
 #define RLIGHTS_IMPLEMENTATION
 #include "rlights.h"
 
+#include "staroid.h"
+
 #if defined(PLATFORM_DESKTOP)
     #define GLSL_VERSION            330
 #else   // PLATFORM_RPI, PLATFORM_ANDROID, PLATFORM_WEB
@@ -38,6 +40,8 @@ void loop()
   camera.up = cam_up;          // Camera up vector (rotation towards target)
   camera.fovy = 45.0f;                                // Camera field-of-view Y
   camera.type = CAMERA_PERSPECTIVE;                   // Camera mode type
+
+  staroid star;
 
   Model model
   { LoadModel("staroid.obj") };
@@ -82,14 +86,14 @@ void loop()
   int ambientLoc = GetShaderLocation(shader, "ambient");
 
   const float floats[4]
-  { 0.2f, 0.2f, 0.2f, 1.0f };
+  { 1.0f, 1.0f, 1.0f, 1.0f };
 
   SetShaderValue(shader, ambientLoc, floats, UNIFORM_VEC4);
 
   model.materials[0].shader = shader;
 
   Light light
-  { CreateLight(LIGHT_POINT, cam_pos, cam_target, WHITE, shader) };
+  { CreateLight(LIGHT_POINT, cam_pos, cam_target, BLACK, shader) };
 
   SetTargetFPS(60);                       // Set our game to run at 60 frames-per-second
   //--------------------------------------------------------------------------------------

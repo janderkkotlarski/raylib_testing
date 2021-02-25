@@ -2,5 +2,5 @@
 
 staroid::staroid()
 {
-
+  m_model = LoadModel("staroid.obj");
 }
