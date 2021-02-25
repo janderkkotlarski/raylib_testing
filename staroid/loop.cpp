@@ -1,5 +1,7 @@
 #include "loop.h"
 
+#include <vector>
+
 #include "raylib.h"
 #include "raymath.h"
 
@@ -42,7 +44,7 @@ void loop()
     for (int y{ 0 }; y < image.height; ++y)
     {
       Color color
-      { 0, 0, 0, 255 };
+      { 0, 127, 0, 255 };
 
       color.r = 127 + x;
       color.b = y;
@@ -53,8 +55,14 @@ void loop()
 
   model.materials[0].maps[MAP_DIFFUSE].texture = LoadTextureFromImage(image);
 
-  Vector3 position
-  { 0.0f, 0.0f, 0.0f };
+  std::vector <Vector3> positions
+  {
+    { 0.0f, 0.0f, 0.0f },
+    { 1.0f, 0.0f, 1.0f }
+  };
+
+  const float factor
+  { 0.01f };
 
   Shader shader
   {
@@ -99,7 +107,9 @@ void loop()
 
       BeginMode3D(camera);
       {
-        DrawModel(model, position, 0.01f, WHITE);
+        DrawModel(model, positions[0], factor, WHITE);
+
+        DrawModel(model, positions[1], factor, WHITE);
       }
 
       EndMode3D();
