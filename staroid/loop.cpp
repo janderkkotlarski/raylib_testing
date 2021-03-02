@@ -46,14 +46,15 @@ void loop()
   Model model
   { LoadModel("staroid.obj") };
 
-
   const Color star_color
-  { 255, 63, 63, 255 };
+  { 63, 255, 63, 255 };
 
-  Image image
-  { GenImageColor(1000, 1000, star_color) };
+  const Texture texture
+  { LoadTextureFromImage(GenImageColor(1000, 1000, WHITE)) };
 
-  model.materials[0].maps[MAP_DIFFUSE].texture = LoadTextureFromImage(image);
+  model.materials[0].maps[MAP_DIFFUSE].texture = texture;
+
+  star.texture(texture);
 
   std::vector <Vector3> positions
   {
@@ -82,6 +83,8 @@ void loop()
 
   model.materials[0].shader = shader;
 
+  star.shading(shader);
+
   Light light
   { CreateLight(LIGHT_POINT, cam_pos, cam_target, WHITE, shader) };
 
@@ -91,6 +94,12 @@ void loop()
   // Main game loop
   while (!WindowShouldClose())            // Detect window close button or ESC key
   {
+    star.color(star_color);
+
+    star.pos(positions[1]);
+
+    star.rotate();
+
     // Update
     //----------------------------------------------------------------------------------
     UpdateCamera(&camera);              // Update camera
@@ -107,9 +116,9 @@ void loop()
 
       BeginMode3D(camera);
       {
-        DrawModel(model, positions[0], factor, WHITE);
+        DrawModel(model, positions[0], factor, RED);
 
-        DrawModel(model, positions[1], factor, WHITE);
+        star.display();
       }
 
       EndMode3D();

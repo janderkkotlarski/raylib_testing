@@ -1,22 +1,22 @@
-resolution = 1;
+resolution = 100;
 
 difference()
 {
     cube(100, center = true);
     translate([50,50,50])
-    { sphere(71); }
+    { sphere(71, $fn=resolution); }
     translate([-50,50,50])
-    { sphere(71); }
+    { sphere(71, $fn=resolution); }
     translate([50,-50,50])
-    { sphere(71); }
+    { sphere(71, $fn=resolution); }
     translate([-50,-50,50])
-    { sphere(71); }
+    { sphere(71, $fn=resolution); }
     translate([50,50,-50])
-    { sphere(71); }
+    { sphere(71, $fn=resolution); }
     translate([-50,50,-50])
-    { sphere(71); }
+    { sphere(71, $fn=resolution); }
     translate([50,-50,-50])
-    { sphere(71); }
+    { sphere(71, $fn=resolution); }
     translate([-50,-50,-50])
-    { sphere(71); }
+    { sphere(71, $fn=resolution); }
 }

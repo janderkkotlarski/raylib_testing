@@ -7,9 +7,12 @@ class staroid
 {
 private:
   float m_size
-  { 1.0f };
+  { 0.01f };
 
   Vector3 m_pos
+  { 0.0f, 0.0f, 0.0f };
+
+  Vector3 m_rot
   { 0.0f, 0.0f, 0.0f };
 
   Model m_model;
@@ -24,11 +27,15 @@ public:
 
   void display();
 
-  void shading(const Shader &shader);
+  void texture(const Texture &texture);
+
+  void shading(Shader &shader);
 
   void color(const Color &color);
 
   void pos(const Vector3 &pos);
+
+  void rotate();
 
 };
 
