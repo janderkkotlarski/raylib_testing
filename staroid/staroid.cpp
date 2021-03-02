@@ -6,7 +6,7 @@ staroid::staroid()
 { load(); }
 
 void staroid::display()
-{ DrawModel(m_model, m_pos, m_size, m_color);}
+{ DrawModel(m_model, m_pos, m_factor, m_color);}
 
 void staroid::load()
 { m_model = LoadModel("staroid.obj"); }
@@ -22,6 +22,9 @@ void staroid::color(const Color &color)
 
 void staroid::pos(const Vector3 &pos)
 { m_pos = pos; }
+
+void staroid::factor(const float factor)
+{ m_factor = factor; }
 
 void staroid::rotate()
 {

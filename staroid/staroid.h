@@ -6,7 +6,7 @@
 class staroid
 {
 private:
-  float m_size
+  float m_factor
   { 0.01f };
 
   Vector3 m_pos
@@ -34,6 +34,8 @@ public:
   void color(const Color &color);
 
   void pos(const Vector3 &pos);
+
+  void factor(const float factor);
 
   void rotate();
 

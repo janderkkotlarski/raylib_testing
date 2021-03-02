@@ -62,8 +62,13 @@ void loop()
     { 0.0f, 1.0f, 1.0f }
   };
 
+  const Vector3 rotate
+  { PI/4.0f, PI/4.0f, 0.0f*PI/4.0f };
+
+  model.transform = MatrixRotateXYZ(rotate);
+
   const float factor
-  { 0.01f };
+  { 0.02f };
 
   Shader shader
   {
@@ -91,9 +96,28 @@ void loop()
   SetTargetFPS(60);                       // Set our game to run at 60 frames-per-second
   //--------------------------------------------------------------------------------------
 
+  const float star_factor
+  { 0.005f };
+
+  float star_phi
+  { 0.0f };
+
+  const float delta_phi
+  { 0.01f };
+
   // Main game loop
   while (!WindowShouldClose())            // Detect window close button or ESC key
   {
+    star_phi += delta_phi;
+
+    if (star_phi > 2.0f*PI)
+    { star_phi -= 2.0f*PI; }
+
+    const float act_factor
+    { abs(star_factor*sin(star_phi)) };
+
+    star.factor(act_factor);
+
     star.color(star_color);
 
     star.pos(positions[1]);
@@ -116,7 +140,7 @@ void loop()
 
       BeginMode3D(camera);
       {
-        DrawModel(model, positions[0], factor, RED);
+        DrawModel(model, positions[0], factor, WHITE);
 
         star.display();
       }
