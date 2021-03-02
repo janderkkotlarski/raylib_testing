@@ -46,22 +46,12 @@ void loop()
   Model model
   { LoadModel("staroid.obj") };
 
+
+  const Color star_color
+  { 255, 63, 63, 255 };
+
   Image image
-  { GenImageColor(1000, 1000, BLACK) };
-
-  for (int x{ 0 }; x < image.width; ++x)
-  {
-    for (int y{ 0 }; y < image.height; ++y)
-    {
-      Color color
-      { 0, 127, 0, 255 };
-
-      color.r = 127 + x;
-      color.b = y;
-
-      ImageDrawPixel(&image, x, y, color);
-    }
-  }
+  { GenImageColor(1000, 1000, star_color) };
 
   model.materials[0].maps[MAP_DIFFUSE].texture = LoadTextureFromImage(image);
 
@@ -93,7 +83,7 @@ void loop()
   model.materials[0].shader = shader;
 
   Light light
-  { CreateLight(LIGHT_POINT, cam_pos, cam_target, BLACK, shader) };
+  { CreateLight(LIGHT_POINT, cam_pos, cam_target, WHITE, shader) };
 
   SetTargetFPS(60);                       // Set our game to run at 60 frames-per-second
   //--------------------------------------------------------------------------------------
