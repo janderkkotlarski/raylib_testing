@@ -14,8 +14,21 @@ private:
 
   Model m_model;
 
+  Color m_color
+  { 63, 63, 63, 255 };
+
+  void load();
+
 public:
   staroid();
+
+  void display();
+
+  void shading(const Shader &shader);
+
+  void color(const Color &color);
+
+  void pos(const Vector3 &pos);
 
 };
 
