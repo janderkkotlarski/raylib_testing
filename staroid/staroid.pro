@@ -56,11 +56,13 @@ LIBS += -LC:\raylib\
 
 SOURCES += \
         auronacci.cpp \
+        functions.cpp \
         loop.cpp \
         main.cpp \
         staroid.cpp
 
 HEADERS += \
   auronacci.h \
+  functions.h \
   loop.h \
   staroid.h

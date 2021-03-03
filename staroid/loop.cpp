@@ -48,8 +48,58 @@ void loop()
   Model model
   { LoadModel("staroid.obj") };
 
+  const Color pastel_red
+  { 255, 63, 63, 255 };
+
+  const Color pastel_orange
+  { 255, 160, 63, 255 };
+
+  const Color pastel_yellow
+  { 255, 255, 63, 255 };
+
+  const Color pastel_lime
+  { 160, 255, 63, 255 };
+
   const Color pastel_green
   { 63, 255, 63, 255 };
+
+  const Color pastel_viridian
+  { 63, 255, 160, 255 };
+
+  const Color pastel_turquoise
+  { 63, 255, 255, 255 };
+
+  const Color pastel_electric
+  { 63, 160, 255, 255 };
+
+  const Color pastel_blue
+  { 63, 63, 255, 255 };
+
+  const Color pastel_indigo
+  { 160, 63, 255, 255 };
+
+  const Color pastel_violet
+  { 255, 63, 255, 255 };
+
+  const Color pastel_purple
+  { 255, 63, 160, 255 };
+
+
+  const std::vector <Color> pastels
+  {
+    pastel_red, pastel_orange, pastel_yellow, pastel_lime,
+    pastel_green, pastel_viridian, pastel_turquoise, pastel_electric,
+    pastel_blue, pastel_indigo, pastel_violet, pastel_purple
+  };
+
+  Vector3 place
+  { 0.0f, 0.0f, 1.0f };
+
+
+
+  std::vector <staroid> stars;
+
+
 
   const Texture texture
   { LoadTextureFromImage(GenImageColor(1000, 1000, WHITE)) };
@@ -120,7 +170,7 @@ void loop()
 
     star.factor(act_factor);
 
-    star.color(pastel_green);
+    star.color(pastel_lime);
 
     star.pos(positions[1]);
 
@@ -142,7 +192,7 @@ void loop()
 
       BeginMode3D(camera);
       {
-        DrawModel(model, positions[0], factor, WHITE);
+        DrawModel(model, positions[0], factor, pastel_electric);
 
         star.display();
       }
