@@ -55,10 +55,12 @@ LIBS += -LC:\raylib\raylib
 LIBS += -LC:\raylib\
 
 SOURCES += \
+        auronacci.cpp \
         loop.cpp \
         main.cpp \
         staroid.cpp
 
 HEADERS += \
+  auronacci.h \
   loop.h \
   staroid.h

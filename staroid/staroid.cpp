@@ -3,13 +3,25 @@
 #include "raymath.h"
 
 staroid::staroid()
-{ load(); }
+{ init(); }
+
+staroid::staroid(const bool central)
+  : m_central(central)
+{ init(); }
 
 void staroid::display()
 { DrawModel(m_model, m_pos, m_factor, m_color);}
 
-void staroid::load()
-{ m_model = LoadModel("staroid.obj"); }
+void staroid::init()
+{
+  if (m_central)
+  {
+    m_pos = (Vector3){ 0.0f, 0.0f, 0.0f };
+    m_factor *= 4.0f;
+  }
+
+  m_model = LoadModel("staroid.obj");
+}
 
 void staroid::texture(const Texture &texture)
 { m_model.materials[0].maps[MAP_DIFFUSE].texture = texture; }

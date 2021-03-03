@@ -6,6 +6,9 @@
 class staroid
 {
 private:
+  const bool m_central
+  { false };
+
   float m_factor
   { 0.01f };
 
@@ -20,10 +23,12 @@ private:
   Color m_color
   { 63, 63, 63, 255 };
 
-  void load();
+  void init();
 
 public:
   staroid();
+
+  staroid(const bool central);
 
   void display();
 

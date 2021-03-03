@@ -41,12 +41,14 @@ void loop()
   camera.fovy = 45.0f;                                // Camera field-of-view Y
   camera.type = CAMERA_PERSPECTIVE;                   // Camera mode type
 
+  staroid central;
+
   staroid star;
 
   Model model
   { LoadModel("staroid.obj") };
 
-  const Color star_color
+  const Color pastel_green
   { 63, 255, 63, 255 };
 
   const Texture texture
@@ -82,7 +84,7 @@ void loop()
   int ambientLoc = GetShaderLocation(shader, "ambient");
 
   const float floats[4]
-  { 1.0f, 1.0f, 1.0f, 1.0f };
+  { 0.0f, 0.0f, 0.0f, 1.0f };
 
   SetShaderValue(shader, ambientLoc, floats, UNIFORM_VEC4);
 
@@ -118,7 +120,7 @@ void loop()
 
     star.factor(act_factor);
 
-    star.color(star_color);
+    star.color(pastel_green);
 
     star.pos(positions[1]);
 
