@@ -23,6 +23,12 @@ private:
   Color m_color
   { 63, 63, 63, 255 };
 
+  const float m_period
+  { 0.5f };
+
+  float m_time
+  { 0.0f };
+
   void init();
 
 public:
@@ -43,6 +49,8 @@ public:
   void factor(const float factor);
 
   void rotate();
+
+  void leap(const float delta);
 
 };
 

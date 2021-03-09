@@ -1,6 +1,7 @@
 #include "loop.h"
 
 #include <vector>
+#include <chrono>
 
 #include "raylib.h"
 #include "raymath.h"
@@ -157,9 +158,22 @@ void loop()
   const float delta_phi
   { 0.01f };
 
+  std::chrono::steady_clock::time_point time_1
+  { std::chrono::steady_clock::now() };
+
+  std::chrono::steady_clock::time_point time_2
+  { std::chrono::steady_clock::now() };
+
   // Main game loop
   while (!WindowShouldClose())            // Detect window close button or ESC key
-  {
+  {    
+    time_2 = std::chrono::steady_clock::now();
+
+    std::chrono::steady_clock::time_point delta
+    { time_2 - time_1 };
+
+    time_1 = std::chrono::steady_clock::now();
+
     star_phi += delta_phi;
 
     if (star_phi > 2.0f*PI)
@@ -203,6 +217,8 @@ void loop()
     }
     EndDrawing();
     //----------------------------------------------------------------------------------
+
+
   }
 
   // De-Initialization

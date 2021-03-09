@@ -55,3 +55,8 @@ void staroid::rotate()
 
   m_model.transform = MatrixRotateXYZ(m_rot);
 }
+
+void staroid::leap(const float delta)
+{
+  m_time += delta;
+}
