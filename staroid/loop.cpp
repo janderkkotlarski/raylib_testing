@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <chrono>
+#include <charconv>
 
 #include "raylib.h"
 #include "raymath.h"
@@ -169,7 +170,7 @@ void loop()
   {    
     time_2 = std::chrono::steady_clock::now();
 
-    std::chrono::steady_clock::time_point delta
+    std::chrono::steady_clock::duration delta
     { time_2 - time_1 };
 
     time_1 = std::chrono::steady_clock::now();
@@ -214,6 +215,18 @@ void loop()
       EndMode3D();
 
       DrawFPS(10, 10);
+
+      const int max
+      { 10 };
+
+      const int number
+      { int(delta.count()) };
+
+      char num_char[max + sizeof(char)];
+
+      std::to_chars(num_char, num_char + max, number);
+
+      DrawText(num_char, 10, 50, 20, WHITE);
     }
     EndDrawing();
     //----------------------------------------------------------------------------------
