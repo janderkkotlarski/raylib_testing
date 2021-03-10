@@ -1,6 +1,8 @@
 #ifndef STAROID_H
 #define STAROID_H
 
+#include <chrono>
+
 #include "raylib.h"
 
 class staroid
@@ -23,11 +25,14 @@ private:
   Color m_color
   { 63, 63, 63, 255 };
 
-  const float m_period
-  { 0.5f };
+  const std::chrono::steady_clock::duration m_duration
+  { 500000000 };
 
-  float m_time
-  { 0.0f };
+  std::chrono::steady_clock::duration m_time
+  { 0 };
+
+  const std::chrono::steady_clock::time_point m_start
+  { std::chrono::steady_clock::now() };
 
   void init();
 

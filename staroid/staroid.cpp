@@ -23,6 +23,15 @@ void staroid::init()
   m_model = LoadModel("staroid.obj");
 }
 
+void staroid::retime()
+{ m_time = std::chrono::steady_clock::now() - m_start; }
+
+void staroid::annihilate()
+{
+  if (m_time > m_duration)
+  { m_exist = false; }
+}
+
 void staroid::texture(const Texture &texture)
 { m_model.materials[0].maps[MAP_DIFFUSE].texture = texture; }
 
