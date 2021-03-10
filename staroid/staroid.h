@@ -34,7 +34,14 @@ private:
   const std::chrono::steady_clock::time_point m_start
   { std::chrono::steady_clock::now() };
 
+  bool m_exist
+  { true };
+
   void init();
+
+  void retime();
+
+  void noppu();
 
 public:
   staroid();
@@ -54,8 +61,6 @@ public:
   void factor(const float factor);
 
   void rotate();
-
-  void leap(const float delta);
 
 };
 

@@ -26,7 +26,7 @@ void staroid::init()
 void staroid::retime()
 { m_time = std::chrono::steady_clock::now() - m_start; }
 
-void staroid::annihilate()
+void staroid::noppu()
 {
   if (m_time > m_duration)
   { m_exist = false; }
@@ -63,9 +63,4 @@ void staroid::rotate()
   { m_rot.z -= 0.01; }
 
   m_model.transform = MatrixRotateXYZ(m_rot);
-}
-
-void staroid::leap(const float delta)
-{
-  m_time += delta;
 }
