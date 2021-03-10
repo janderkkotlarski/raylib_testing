@@ -39,9 +39,9 @@ private:
 
   void init();
 
-  void retime();
+  void timer();
 
-  void noppu();
+  void reset();
 
 public:
   staroid();

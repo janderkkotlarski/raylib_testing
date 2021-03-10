@@ -94,8 +94,26 @@ void loop()
     pastel_blue, pastel_indigo, pastel_violet, pastel_purple
   };
 
+  const int amount
+  { int(pastels.size()) };
+
+  const float rotation
+  { 2.0f*PI/amount };
+
+  const float grow
+  { 1.1f };
+
   Vector3 place
   { 0.0f, 0.0f, 1.0f };
+
+  std::vector <Vector3> places;
+
+  for (int count{ 0 }; count < amount; ++count)
+  {
+    places.push_back(place);
+
+    // MatrixRotateX()
+  }
 
 
 

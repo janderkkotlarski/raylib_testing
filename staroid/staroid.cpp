@@ -10,7 +10,7 @@ staroid::staroid(const bool central)
 { init(); }
 
 void staroid::display()
-{ DrawModel(m_model, m_pos, m_factor, m_color);}
+{ DrawModel(m_model, m_pos, m_factor, m_color); }
 
 void staroid::init()
 {
@@ -23,13 +23,19 @@ void staroid::init()
   m_model = LoadModel("staroid.obj");
 }
 
-void staroid::retime()
-{ m_time = std::chrono::steady_clock::now() - m_start; }
-
-void staroid::noppu()
+void staroid::timer()
 {
+  m_time = std::chrono::steady_clock::now() - m_start;
+
   if (m_time > m_duration)
   { m_exist = false; }
+}
+
+void staroid::reset()
+{
+  m_time = std::chrono::steady_clock::duration{ 0 };
+
+  m_exist = true;
 }
 
 void staroid::texture(const Texture &texture)
