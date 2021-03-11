@@ -25,3 +25,14 @@ void millis_wait()
     delta = time_2 - time_1;
   }
 }
+
+// void rotate_
+
+void rotate_vector3_xyz(Vector3 &vec, const float angle,
+                        const bool x, const bool y, const bool z)
+{
+
+
+  // if (x)
+  // { Vector2Rotate(Vector2{})
+}

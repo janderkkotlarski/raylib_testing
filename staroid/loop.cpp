@@ -112,7 +112,6 @@ void loop()
   {
     places.push_back(place);
 
-    // MatrixRotateX()
   }
 
 
