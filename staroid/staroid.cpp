@@ -10,6 +10,7 @@ staroid::staroid(const bool central)
 { init(); }
 
 void staroid::display()
+const noexcept
 { DrawModel(m_model, m_pos, m_factor, m_color); }
 
 void staroid::init()

@@ -41,21 +41,14 @@ void rotate_vector3_xyz(Vector3 &vec3, const float angle,
   else if (z)
   { vec2 = Vector2{ vec3.x, vec3.y }; }
 
-  Vector2Rotate(vec2, angle);
+  // Vector2Rotate(vec2, angle);
+
+  vec2.x += 0.5;
 
   if (x)
-  {
-    vec3.y = vec2.x;
-    vec3.z = vec2.y;
-  }
+  { vec3 = Vector3{ vec3.x, vec2.x, vec2.y }; }
   else if (y)
-  {
-    vec3.z = vec2.x;
-    vec3.x = vec2.y;
-  }
+  { vec3 = Vector3{ vec2.y, vec3.y, vec2.x }; }
   else if (z)
-  {
-    vec3.x = vec2.x;
-    vec3.y = vec2.y;
-  }
+  { vec3 = Vector3{ vec2.x, vec2.y, vec3.z }; }
 }

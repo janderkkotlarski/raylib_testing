@@ -48,7 +48,8 @@ public:
 
   staroid(const bool central);
 
-  void display();
+  void display()
+  const noexcept;
 
   void texture(const Texture &texture);
 

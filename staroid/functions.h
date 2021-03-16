@@ -10,6 +10,8 @@ float chronolizer(std::chrono::steady_clock::time_point &time);
 
 void millis_wait();
 
+void rotate_vector2(Vector2 &vec2, const float angle);
+
 void rotate_vector3_xyz(Vector3 &vec3, const float angle,
                         const bool x, const bool y, const bool z);
 

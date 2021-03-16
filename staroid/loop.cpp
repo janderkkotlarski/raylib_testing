@@ -28,7 +28,7 @@ void loop()
   InitWindow(screenWidth, screenHeight, "STAROID");
 
   Vector3 cam_pos
-  { 4.0f, 0.0f, 0.0f };
+  { 16.0f, 0.0f, 0.0f };
 
   Vector3 cam_target
   { 0.0f, 0.0f, 0.0f };
@@ -98,10 +98,13 @@ void loop()
   const int amount
   { int(pastels.size()) };
 
-  const float rotation
-  { 2.0f*PI/amount };
+  const int amax
+  { 11 };
 
-  float factor
+  const float rotation
+  { 360.0f/amount };
+
+  float vactor
   { 0.005f };
 
   const float grow
@@ -120,7 +123,11 @@ void loop()
 
     star.color(pastel);
 
-    star.factor(factor);
+    star.factor(vactor);
+
+    stars.push_back(star);
+
+    vactor *= grow;
 
     rotate_vector3_xyz(place, rotation, true, false, false);
   }
@@ -234,6 +241,9 @@ void loop()
         DrawModel(model, positions[0], factor, pastel_electric);
 
         star.display();
+
+        for (int count { 0 }; count < amax; ++count)
+        { stars[count].display(); }
       }
 
       EndMode3D();
