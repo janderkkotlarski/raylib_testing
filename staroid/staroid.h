@@ -48,6 +48,8 @@ public:
 
   staroid(const bool central);
 
+  Vector3 get_pos();
+
   void display()
   const noexcept;
 
@@ -62,6 +64,8 @@ public:
   void factor(const float factor);
 
   void rotate();
+
+
 
 };
 

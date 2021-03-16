@@ -26,7 +26,8 @@ void millis_wait()
   }
 }
 
-// void rotate_
+void rotate_vector2(Vector2 &vec2, const float angle)
+{ vec2 = Vector2{ vec2.x*cos(angle) - vec2.y*sin(angle), vec2.y*cos(angle) + vec2.x*sin(angle) }; }
 
 void rotate_vector3_xyz(Vector3 &vec3, const float angle,
                         const bool x, const bool y, const bool z)
@@ -41,9 +42,7 @@ void rotate_vector3_xyz(Vector3 &vec3, const float angle,
   else if (z)
   { vec2 = Vector2{ vec3.x, vec3.y }; }
 
-  // Vector2Rotate(vec2, angle);
-
-  vec2.x += 0.5;
+  rotate_vector2(vec2, angle);
 
   if (x)
   { vec3 = Vector3{ vec3.x, vec2.x, vec2.y }; }

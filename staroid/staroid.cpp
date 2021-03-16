@@ -13,6 +13,9 @@ void staroid::display()
 const noexcept
 { DrawModel(m_model, m_pos, m_factor, m_color); }
 
+Vector3 staroid::get_pos()
+{ return m_pos; }
+
 void staroid::init()
 {
   if (m_central)

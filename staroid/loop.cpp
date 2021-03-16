@@ -28,7 +28,7 @@ void loop()
   InitWindow(screenWidth, screenHeight, "STAROID");
 
   Vector3 cam_pos
-  { 16.0f, 0.0f, 0.0f };
+  { 8.0f, 0.0f, 0.0f };
 
   Vector3 cam_target
   { 0.0f, 0.0f, 0.0f };
@@ -102,7 +102,7 @@ void loop()
   { 11 };
 
   const float rotation
-  { 360.0f/amount };
+  { 2.0f*PI/amount };
 
   float vactor
   { 0.005f };
@@ -111,7 +111,7 @@ void loop()
   { 1.1f };
 
   Vector3 place
-  { 0.0f, 0.0f, 1.0f };
+  { 0.0f, 0.0f, 2.0f };
 
   std::vector <staroid> stars;
 
@@ -175,10 +175,13 @@ void loop()
 
   star.shading(shader);
 
+  for (staroid &aster: stars)
+  { aster.shading(shader); }
+
   Light light
   { CreateLight(LIGHT_POINT, cam_pos, cam_target, WHITE, shader) };
 
-  SetTargetFPS(60);                       // Set our game to run at 60 frames-per-second
+  SetTargetFPS(120);                       // Set our game to run at 60 frames-per-second
   //--------------------------------------------------------------------------------------
 
   const float star_factor
@@ -196,6 +199,9 @@ void loop()
   std::chrono::steady_clock::time_point time_2
   { std::chrono::steady_clock::now() };
 
+  const float dial
+  { 0.1f*2.0f*PI };
+
   // Main game loop
   while (!WindowShouldClose())            // Detect window close button or ESC key
   {    
@@ -205,6 +211,9 @@ void loop()
     { time_2 - time_1 };
 
     time_1 = std::chrono::steady_clock::now();
+
+    const float dialta
+    { dial*float(delta.count())/1000000000.0f };
 
     star_phi += delta_phi;
 
@@ -229,6 +238,15 @@ void loop()
     //----------------------------------------------------------------------------------
 
 
+    for (staroid &aster: stars)
+    {
+      Vector3 pos
+      { aster.get_pos() };
+
+      rotate_vector3_xyz(pos, dialta, true, false, false);
+
+      aster.pos(pos);
+    }
 
     // Draw
     //----------------------------------------------------------------------------------
@@ -242,8 +260,8 @@ void loop()
 
         star.display();
 
-        for (int count { 0 }; count < amax; ++count)
-        { stars[count].display(); }
+        for (const staroid &aster: stars)
+        { aster.display(); }
       }
 
       EndMode3D();
