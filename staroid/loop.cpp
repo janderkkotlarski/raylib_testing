@@ -11,6 +11,7 @@
 #include "rlights.h"
 
 #include "staroid.h"
+#include "functions.h"
 
 #if defined(PLATFORM_DESKTOP)
     #define GLSL_VERSION            330
@@ -100,23 +101,29 @@ void loop()
   const float rotation
   { 2.0f*PI/amount };
 
+  float factor
+  { 0.005f };
+
   const float grow
   { 1.1f };
 
   Vector3 place
   { 0.0f, 0.0f, 1.0f };
 
-  std::vector <Vector3> places;
-
-  for (int count{ 0 }; count < amount; ++count)
-  {
-    places.push_back(place);
-
-  }
-
-
-
   std::vector <staroid> stars;
+
+  for (const Color &pastel: pastels)
+  {
+    staroid star;
+
+    star.pos(place);
+
+    star.color(pastel);
+
+    star.factor(factor);
+
+    rotate_vector3_xyz(place, rotation, true, false, false);
+  }
 
 
 
