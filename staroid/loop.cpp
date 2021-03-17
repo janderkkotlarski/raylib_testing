@@ -44,9 +44,7 @@ void loop()
   camera.fovy = 45.0f;                                // Camera field-of-view Y
   camera.type = CAMERA_PERSPECTIVE;                   // Camera mode type
 
-  staroid central;
-
-  staroid star;
+  staroid star(100.0f);
 
   Model model
   { LoadModel("staroid.obj") };
@@ -144,7 +142,7 @@ void loop()
   std::vector <Vector3> positions
   {
     { 0.0f, 0.0f, 0.0f },
-    { 0.0f, 1.0f, 1.0f }
+    { 0.0f, 0.0f, 0.0f }
   };
 
   const Vector3 rotate
@@ -181,8 +179,14 @@ void loop()
   Light light
   { CreateLight(LIGHT_POINT, cam_pos, cam_target, WHITE, shader) };
 
-  SetTargetFPS(120);                       // Set our game to run at 60 frames-per-second
+  SetTargetFPS(10000);                       // Set our game to run at 60 frames-per-second
   //--------------------------------------------------------------------------------------
+
+  const int frame_max
+  { 100 };
+
+  int frames
+  { 0 };
 
   const float star_factor
   { 0.005f };
@@ -191,7 +195,7 @@ void loop()
   { 0.0f };
 
   const float delta_phi
-  { 0.01f };
+  { 2.0f };
 
   std::chrono::steady_clock::time_point time_1
   { std::chrono::steady_clock::now() };
@@ -215,7 +219,7 @@ void loop()
     const float dialta
     { dial*float(delta.count())/1000000000.0f };
 
-    star_phi += delta_phi;
+    star_phi += dialta*delta_phi;
 
     if (star_phi > 2.0f*PI)
     { star_phi -= 2.0f*PI; }
@@ -225,7 +229,7 @@ void loop()
 
     star.factor(act_factor);
 
-    star.color(pastel_lime);
+    star.color(WHITE);
 
     star.pos(positions[1]);
 
@@ -240,50 +244,50 @@ void loop()
 
     for (staroid &aster: stars)
     {
-      Vector3 pos
-      { aster.get_pos() };
-
-      rotate_vector3_xyz(pos, dialta, true, false, false);
-
-      aster.pos(pos);
+      aster.accelerate(star);
+      aster.fall(dialta);
     }
+
 
     // Draw
     //----------------------------------------------------------------------------------
-    BeginDrawing();
+    if (frames == 0)
     {
-      ClearBackground(BLACK);
-
-      BeginMode3D(camera);
+      BeginDrawing();
       {
-        DrawModel(model, positions[0], factor, pastel_electric);
+        ClearBackground(BLACK);
 
-        star.display();
+        BeginMode3D(camera);
+        {
+          // DrawModel(model, positions[0], factor, pastel_electric);
 
-        for (const staroid &aster: stars)
-        { aster.display(); }
+          star.display();
+
+          for (staroid &aster: stars)
+          { aster.display(); }
+        }
+
+        EndMode3D();
+
+        // DrawFPS(10, 10);
+
+        const int max
+        { 10 };
+
+        const int number
+        { int(delta.count()) };
+
+        char num_char[max + sizeof(char)];
+
+        std::to_chars(num_char, num_char + max, number);
+
+        // DrawText(num_char, 10, 50, 20, WHITE);
       }
-
-      EndMode3D();
-
-      DrawFPS(10, 10);
-
-      const int max
-      { 10 };
-
-      const int number
-      { int(delta.count()) };
-
-      char num_char[max + sizeof(char)];
-
-      std::to_chars(num_char, num_char + max, number);
-
-      DrawText(num_char, 10, 50, 20, WHITE);
+      EndDrawing();
     }
-    EndDrawing();
     //----------------------------------------------------------------------------------
-
-
+    ++frames;
+    frames %= frame_max;
   }
 
   // De-Initialization

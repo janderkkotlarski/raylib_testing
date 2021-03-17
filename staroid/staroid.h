@@ -72,7 +72,7 @@ public:
   const noexcept;
 
   void display()
-  const noexcept;
+  noexcept;
 
   void texture(const Texture &texture);
 
@@ -86,7 +86,9 @@ public:
 
   void rotate();
 
-  void accelerator(const staroid &star);
+  void accelerate(const staroid &star);
+
+  void fall(const float slice);
 
 };
 

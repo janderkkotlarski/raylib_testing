@@ -18,8 +18,13 @@ const noexcept
 { return m_pos; }
 
 void staroid::display()
-const noexcept
-{ DrawModel(m_model, m_pos, m_factor, m_color); }
+noexcept
+{
+  // timer();
+
+  if (m_exist)
+  { DrawModel(m_model, m_pos, m_factor, m_color); }
+}
 
 void staroid::init()
 {
@@ -80,13 +85,26 @@ void staroid::rotate()
   m_model.transform = MatrixRotateXYZ(m_rot);
 }
 
-void staroid::accelerator(const staroid &star)
+void staroid::accelerate(const staroid &star)
 {
   if (star.get_mass() > 0.0f)
   {
     const Vector3 difference
     { Vector3Subtract(star.get_pos(), m_pos) };
 
-    m_acc = Vector3Scale(difference, star.get_mass());
+    const float distance
+    { Vector3Length(difference) + 0.1f };
+
+    const float acceleration
+    { star.get_mass()/(distance*distance) };
+
+    m_acc = Vector3Scale(difference, acceleration);
   }
+}
+
+void staroid::fall(const float slice)
+{
+  m_vel = Vector3Add(m_vel, Vector3Scale(m_acc, slice));
+
+  m_pos = Vector3Add(m_pos, Vector3Scale(m_vel, slice));
 }
