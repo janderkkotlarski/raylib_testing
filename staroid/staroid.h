@@ -74,15 +74,17 @@ public:
   void display()
   noexcept;
 
-  void texture(const Texture &texture);
+  void set_texture(const Texture &texture);
 
-  void shading(Shader &shader);
+  void set_shading(Shader &shader);
 
-  void color(const Color &color);
+  void set_color(const Color &color);
 
-  void pos(const Vector3 &pos);
+  void set_pos(const Vector3 &pos);
 
-  void factor(const float factor);
+  void set_vel(const Vector3 &vel);
+
+  void set_factor(const float factor);
 
   void rotate();
 

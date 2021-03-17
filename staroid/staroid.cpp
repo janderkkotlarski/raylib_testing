@@ -52,19 +52,22 @@ void staroid::reset()
   m_exist = true;
 }
 
-void staroid::texture(const Texture &texture)
+void staroid::set_texture(const Texture &texture)
 { m_model.materials[0].maps[MAP_DIFFUSE].texture = texture; }
 
-void staroid::shading(Shader &shader)
+void staroid::set_shading(Shader &shader)
 { m_model.materials[0].shader = shader; }
 
-void staroid::color(const Color &color)
+void staroid::set_color(const Color &color)
 { m_color = color; }
 
-void staroid::pos(const Vector3 &pos)
+void staroid::set_pos(const Vector3 &pos)
 { m_pos = pos; }
 
-void staroid::factor(const float factor)
+void staroid::set_vel(const Vector3 &vel)
+{ m_vel = vel; }
+
+void staroid::set_factor(const float factor)
 { m_factor = factor; }
 
 void staroid::rotate()
@@ -93,10 +96,10 @@ void staroid::accelerate(const staroid &star)
     { Vector3Subtract(star.get_pos(), m_pos) };
 
     const float distance
-    { Vector3Length(difference) + 0.1f };
+    { Vector3Length(difference) + 1.0f };
 
     const float acceleration
-    { star.get_mass()/(distance*distance) };
+    { star.get_mass()/(distance*distance*distance) };
 
     m_acc = Vector3Scale(difference, acceleration);
   }

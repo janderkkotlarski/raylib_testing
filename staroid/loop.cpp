@@ -44,7 +44,7 @@ void loop()
   camera.fovy = 45.0f;                                // Camera field-of-view Y
   camera.type = CAMERA_PERSPECTIVE;                   // Camera mode type
 
-  staroid star(100.0f);
+
 
   Model model
   { LoadModel("staroid.obj") };
@@ -115,17 +115,30 @@ void loop()
 
   for (const Color &pastel: pastels)
   {
-    staroid star;
+    staroid aster;
 
-    star.pos(place);
+    aster.set_pos(place);
 
-    star.color(pastel);
+    aster.set_color(pastel);
 
-    star.factor(vactor);
+    aster.set_factor(vactor);
 
-    stars.push_back(star);
+    Vector3 vel
+    { place };
 
-    vactor *= grow;
+    vel = Vector3Scale(vel, 0.5f*(vel.y + vel.z));
+
+    rotate_vector3_xyz(vel, 0.5f*PI, true, false, false);
+
+    rotate_vector3_xyz(vel, 0.25f*PI, false, true, false);
+
+
+
+    aster.set_vel(vel);
+
+    stars.push_back(aster);
+
+    // vactor *= grow;
 
     rotate_vector3_xyz(place, rotation, true, false, false);
   }
@@ -137,7 +150,12 @@ void loop()
 
   model.materials[0].maps[MAP_DIFFUSE].texture = texture;
 
-  star.texture(texture);
+  const float mass
+  { 50.0f };
+
+  staroid star(mass);
+
+  star.set_texture(texture);
 
   std::vector <Vector3> positions
   {
@@ -171,10 +189,21 @@ void loop()
 
   model.materials[0].shader = shader;
 
-  star.shading(shader);
+  star.set_shading(shader);
 
   for (staroid &aster: stars)
-  { aster.shading(shader); }
+  { aster.set_shading(shader); }
+
+
+
+  star.set_color(WHITE);
+
+  star.set_pos(positions[1]);
+
+  const float star_factor
+  { 0.02f };
+
+  star.set_factor(star_factor);
 
   Light light
   { CreateLight(LIGHT_POINT, cam_pos, cam_target, WHITE, shader) };
@@ -188,8 +217,7 @@ void loop()
   int frames
   { 0 };
 
-  const float star_factor
-  { 0.005f };
+
 
   float star_phi
   { 0.0f };
@@ -227,11 +255,7 @@ void loop()
     const float act_factor
     { abs(star_factor*sin(star_phi)) };
 
-    star.factor(act_factor);
 
-    star.color(WHITE);
-
-    star.pos(positions[1]);
 
     star.rotate();
 
