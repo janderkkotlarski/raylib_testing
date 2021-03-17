@@ -12,9 +12,19 @@ private:
   { false };
 
   float m_factor
+  // Scale factor for the 3D model
   { 0.01f };
 
   Vector3 m_pos
+  // Position
+  { 0.0f, 0.0f, 0.0f };
+
+  Vector3 m_vel
+  // Velocity
+  { 0.0f, 0.0f, 0.0f };
+
+  Vector3 m_acc
+  // Acceleration
   { 0.0f, 0.0f, 0.0f };
 
   Vector3 m_rot
