@@ -8,8 +8,6 @@
 class staroid
 {
 private:
-  const bool m_central
-  { false };
 
   float m_factor
   // Scale factor for the 3D model
@@ -27,21 +25,30 @@ private:
   // Acceleration
   { 0.0f, 0.0f, 0.0f };
 
+  const float m_mass
+  { 0.0f };
+
   Vector3 m_rot
+  // Spatial orientation
   { 0.0f, 0.0f, 0.0f };
 
   Model m_model;
+  // 3D model
 
   Color m_color
+  // Color
   { 63, 63, 63, 255 };
 
   const std::chrono::steady_clock::duration m_duration
+  // Visibility duration
   { 500000000 };
 
   std::chrono::steady_clock::duration m_time
+  // Duration
   { 0 };
 
   const std::chrono::steady_clock::time_point m_start
+
   { std::chrono::steady_clock::now() };
 
   bool m_exist
@@ -56,9 +63,13 @@ private:
 public:
   staroid();
 
-  staroid(const bool central);
+  staroid(const float mass);
 
-  Vector3 get_pos();
+  float get_mass()
+  const noexcept;
+
+  Vector3 get_pos()
+  const noexcept;
 
   void display()
   const noexcept;
@@ -75,7 +86,7 @@ public:
 
   void rotate();
 
-
+  void accelerator(const staroid &star);
 
 };
 

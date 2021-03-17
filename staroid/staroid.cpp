@@ -5,20 +5,25 @@
 staroid::staroid()
 { init(); }
 
-staroid::staroid(const bool central)
-  : m_central(central)
+staroid::staroid(const float mass)
+  : m_mass(mass)
 { init(); }
+
+float staroid::get_mass()
+const noexcept
+{ return m_mass; }
+
+Vector3 staroid::get_pos()
+const noexcept
+{ return m_pos; }
 
 void staroid::display()
 const noexcept
 { DrawModel(m_model, m_pos, m_factor, m_color); }
 
-Vector3 staroid::get_pos()
-{ return m_pos; }
-
 void staroid::init()
 {
-  if (m_central)
+  if (m_mass > 0.0f)
   {
     m_pos = (Vector3){ 0.0f, 0.0f, 0.0f };
     m_factor *= 4.0f;
@@ -73,4 +78,15 @@ void staroid::rotate()
   { m_rot.z -= 0.01; }
 
   m_model.transform = MatrixRotateXYZ(m_rot);
+}
+
+void staroid::accelerator(const staroid &star)
+{
+  if (star.get_mass() > 0.0f)
+  {
+    const Vector3 difference
+    { Vector3Subtract(star.get_pos(), m_pos) };
+
+    m_acc = Vector3Scale(difference, star.get_mass());
+  }
 }
