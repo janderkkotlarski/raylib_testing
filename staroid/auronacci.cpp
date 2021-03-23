@@ -1,5 +1,7 @@
 #include "auronacci.h"
 
+#include <iostream>
+
 auronacci::auronacci()
 { cycle(100); }
 
@@ -28,7 +30,15 @@ int auronacci::get_number()
 
 float auronacci::get_fraction()
 {
-  cycle(get_number() % 10 + 1);
+  cycle(get_number() % 100 + 11);
 
-  return float(m_first)/float(m_max);
+  const float fraction
+  { float(m_first)/float(m_max) };
+
+  if (fraction < 0.0f ||
+      fraction > 1.0f ||
+      true)
+  { std::cout << "fraction = " << fraction <<std::endl; }
+
+  return fraction;
 }

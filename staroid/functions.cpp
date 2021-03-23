@@ -34,6 +34,14 @@ float phi_picker(const float fraction)
 noexcept
 { return 2.0f*PI*(fraction - 1.0f); }
 
+Vector3 sphere_pos(const float radius, const float theta, const float phi)
+noexcept
+{
+  return Vector3{ radius*cos(theta)*cos(phi),
+                  radius*cos(theta)*sin(phi),
+                  radius*sin(theta)};
+}
+
 void rotate_vector2(Vector2 &vec2, const float angle)
 { vec2 = Vector2{ vec2.x*cos(angle) - vec2.y*sin(angle), vec2.y*cos(angle) + vec2.x*sin(angle) }; }
 

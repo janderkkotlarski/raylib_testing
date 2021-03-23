@@ -22,6 +22,8 @@
 
 void loop()
 {
+
+
   auronacci gold;
 
   const int screenWidth = 800;
@@ -29,6 +31,7 @@ void loop()
 
   SetConfigFlags(FLAG_MSAA_4X_HINT);  // Enable Multi Sampling Anti Aliasing 4x (if available)
   InitWindow(screenWidth, screenHeight, "STAROID");
+
 
   Vector3 cam_pos
   { 8.0f, 0.0f, 0.0f };
@@ -120,24 +123,23 @@ void loop()
   {
     staroid aster;
 
-    aster.set_pos(place);
+    const float radius
+    { 1.0f*(1.5f + 1.0f*gold.get_fraction()) };
+
+    const float theta
+    { PI*(0.5f + 1.0f*theta_picker(gold.get_fraction())) };
+
+    const float phi
+    { 1.0f*phi_picker(gold.get_fraction()) };
+
+    const Vector3 pos
+    { sphere_pos(radius, theta, phi) };
+
+    aster.set_pos(pos);
 
     aster.set_color(pastel);
 
     aster.set_factor(vactor);
-
-    Vector3 vel
-    { place };
-
-    vel = Vector3Scale(vel, 0.5f*(vel.y + vel.z));
-
-    rotate_vector3_xyz(vel, 0.5f*PI, true, false, false);
-
-    rotate_vector3_xyz(vel, 0.25f*PI, false, true, false);
-
-
-
-    aster.set_vel(vel);
 
     stars.push_back(aster);
 
@@ -239,13 +241,16 @@ void loop()
 
   // Main game loop
   while (!WindowShouldClose())            // Detect window close button or ESC key
-  {    
+  {
     time_2 = std::chrono::steady_clock::now();
 
     std::chrono::steady_clock::duration delta
     { time_2 - time_1 };
 
     time_1 = std::chrono::steady_clock::now();
+
+
+
 
     const float dialta
     { dial*float(delta.count())/1000000000.0f };
@@ -271,6 +276,26 @@ void loop()
 
     for (staroid &aster: stars)
     {
+      if (IsKeyReleased(KEY_DELETE))
+      {
+        const float radius
+        { 1.0f*(1.5f + 1.0f*gold.get_fraction()) };
+
+        const float theta
+        { PI*(0.5f + 1.0f*theta_picker(gold.get_fraction())) };
+
+        const float phi
+        { 1.0f*phi_picker(gold.get_fraction()) };
+
+        const Vector3 pos
+        { sphere_pos(radius, theta, phi) };
+
+        aster.set_pos(pos);
+
+        aster.set_vel(Vector3{ 0.0f, 0.0f, 0.0f });
+
+      }
+
       aster.accelerate(star);
       aster.fall(dialta);
     }
@@ -288,7 +313,7 @@ void loop()
         {
           // DrawModel(model, positions[0], factor, pastel_electric);
 
-          star.display();
+          // star.display();
 
           for (staroid &aster: stars)
           { aster.display(); }
@@ -315,6 +340,8 @@ void loop()
     //----------------------------------------------------------------------------------
     ++frames;
     frames %= frame_max;
+
+
   }
 
   // De-Initialization
@@ -322,5 +349,7 @@ void loop()
 
   UnloadMaterial(model.materials[0]); // Unload material: shader and textures
   UnloadModel(model);         // Unload model
+
+
   CloseWindow();
 }
