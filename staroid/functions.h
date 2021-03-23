@@ -6,9 +6,17 @@
 #include "raylib.h"
 #include "raymath.h"
 
+#include "auronacci.h"
+
 float chronolizer(std::chrono::steady_clock::time_point &time);
 
 void millis_wait();
+
+float theta_picker(const float fraction)
+noexcept;
+
+float phi_picker(const float fraction)
+noexcept;
 
 void rotate_vector2(Vector2 &vec2, const float angle);
 

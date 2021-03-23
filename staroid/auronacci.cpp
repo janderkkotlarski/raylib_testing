@@ -25,3 +25,10 @@ int auronacci::get_number()
 
   return m_first;
 }
+
+float auronacci::get_fraction()
+{
+  cycle(get_number() % 10 + 1);
+
+  return float(m_first)/float(m_max);
+}

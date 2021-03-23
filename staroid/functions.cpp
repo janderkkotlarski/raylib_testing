@@ -26,6 +26,14 @@ void millis_wait()
   }
 }
 
+float theta_picker(const float fraction)
+noexcept
+{ return asin(2.0f*(fraction - 0.5f)); }
+
+float phi_picker(const float fraction)
+noexcept
+{ return 2.0f*PI*(fraction - 1.0f); }
+
 void rotate_vector2(Vector2 &vec2, const float angle)
 { vec2 = Vector2{ vec2.x*cos(angle) - vec2.y*sin(angle), vec2.y*cos(angle) + vec2.x*sin(angle) }; }
 

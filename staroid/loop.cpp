@@ -12,6 +12,7 @@
 
 #include "staroid.h"
 #include "functions.h"
+#include "auronacci.h"
 
 #if defined(PLATFORM_DESKTOP)
     #define GLSL_VERSION            330
@@ -21,6 +22,8 @@
 
 void loop()
 {
+  auronacci gold;
+
   const int screenWidth = 800;
   const int screenHeight = 800;
 

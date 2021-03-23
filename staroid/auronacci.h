@@ -26,6 +26,8 @@ public:
   void cycle(const int max);
 
   int get_number();
+
+  float get_fraction();
 };
 
 #endif // AURONACCI_H
