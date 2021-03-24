@@ -34,7 +34,7 @@ void loop()
 
 
   Vector3 cam_pos
-  { 8.0f, 0.0f, 0.0f };
+  { 16.0f, 0.0f, 0.0f };
 
   Vector3 cam_target
   { 0.0f, 0.0f, 0.0f };
@@ -103,7 +103,7 @@ void loop()
   { int(pastels.size()) };
 
   const int amax
-  { 11 };
+  { 100 };
 
   const float rotation
   { 2.0f*PI/amount };
@@ -111,31 +111,32 @@ void loop()
   float vactor
   { 0.005f };
 
-  const float grow
-  { 1.1f };
-
-  Vector3 place
-  { 0.0f, 0.0f, 2.0f };
-
   std::vector <staroid> stars;
 
-  for (const Color &pastel: pastels)
+  const float radius_min
+  { 2.00f };
+
+  const float radius_delta
+  { 0.00f };
+
+  const float velocity_min
+  { 0.000f };
+
+  const float velocity_delta
+  { 10.000f };
+
+  for (int count{ 0 }; count < amax; ++count)
   {
-    staroid aster;
+    staroid aster;    
 
-    aster.set_pos(sphere_vector(gold, 1.5f, 1.0f));
-
-    aster.set_color(pastel);
+    aster.set_color(pastels[count % pastels.size()]);
 
     aster.set_factor(vactor);
 
-    aster.set_vel(sphere_vector(gold, 0.0f, 2.0f));
+    aster.set_pos(sphere_vector(gold, radius_min, radius_delta));
+    aster.set_vel(sphere_vector(gold, velocity_min, velocity_delta));
 
     stars.push_back(aster);
-
-    // vactor *= grow;
-
-    rotate_vector3_xyz(place, rotation, true, false, false);
   }
 
 
@@ -146,7 +147,7 @@ void loop()
   model.materials[0].maps[MAP_DIFFUSE].texture = texture;
 
   const float mass
-  { 50.0f };
+  { 1.0f };
 
   staroid star(mass);
 
@@ -162,9 +163,6 @@ void loop()
   { PI/4.0f, PI/4.0f, 0.0f*PI/4.0f };
 
   model.transform = MatrixRotateXYZ(rotate);
-
-  const float factor
-  { 0.02f };
 
   Shader shader
   {
@@ -212,8 +210,6 @@ void loop()
   int frames
   { 0 };
 
-
-
   float star_phi
   { 0.0f };
 
@@ -250,10 +246,6 @@ void loop()
     if (star_phi > 2.0f*PI)
     { star_phi -= 2.0f*PI; }
 
-    const float act_factor
-    { abs(star_factor*sin(star_phi)) };
-
-
 
     star.rotate();
 
@@ -268,12 +260,14 @@ void loop()
     {
       if (IsKeyReleased(KEY_DELETE))
       {        
-        aster.set_pos(sphere_vector(gold, 1.5f, 1.0f));
-        aster.set_vel(sphere_vector(gold, 0.0f, 2.0f));
+        aster.set_pos(sphere_vector(gold, radius_min, radius_delta));
+        aster.set_vel(sphere_vector(gold, velocity_min, velocity_delta));
       }
 
       aster.accelerate(star);
       aster.fall(dialta);
+
+      if()
     }
 
 

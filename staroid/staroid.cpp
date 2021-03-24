@@ -99,7 +99,7 @@ void staroid::accelerate(const staroid &star)
     { Vector3Length(difference) + 1.0f };
 
     const float acceleration
-    { star.get_mass()/(distance*distance*distance) };
+    { star.get_mass()*distance };
 
     m_acc = Vector3Scale(difference, acceleration);
   }
