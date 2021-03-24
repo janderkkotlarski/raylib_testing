@@ -17,6 +17,10 @@ Vector3 staroid::get_pos()
 const noexcept
 { return m_pos; }
 
+float staroid::get_dist()
+const noexcept
+{ return m_dist; }
+
 void staroid::display()
 noexcept
 {
@@ -105,9 +109,25 @@ void staroid::accelerate(const staroid &star)
   }
 }
 
+void staroid::accelerate(const float mass)
+{
+  if (mass > 0.0f)
+  {
+    const float distance
+    { m_dist + 1.0f };
+
+    const float acceleration
+    { -mass*distance };
+
+    m_acc = Vector3Scale(m_pos, acceleration);
+  }
+}
+
 void staroid::fall(const float slice)
 {
   m_vel = Vector3Add(m_vel, Vector3Scale(m_acc, slice));
 
   m_pos = Vector3Add(m_pos, Vector3Scale(m_vel, slice));
+
+  m_dist = Vector3Length(get_pos());
 }

@@ -102,30 +102,30 @@ void loop()
   const int amount
   { int(pastels.size()) };
 
-  const int amax
-  { 100 };
-
-  const float rotation
-  { 2.0f*PI/amount };
+  const int star_max
+  { 200 };
 
   float vactor
-  { 0.005f };
+  { 0.01f };
 
   std::vector <staroid> stars;
 
+  const float horizon
+  { 3.0f };
+
   const float radius_min
-  { 2.00f };
+  { 0.00f };
 
   const float radius_delta
   { 0.00f };
 
   const float velocity_min
-  { 0.000f };
-
-  const float velocity_delta
   { 10.000f };
 
-  for (int count{ 0 }; count < amax; ++count)
+  const float velocity_delta
+  { 0.000f };
+
+  for (int count{ 0 }; count < star_max; ++count)
   {
     staroid aster;    
 
@@ -147,7 +147,7 @@ void loop()
   model.materials[0].maps[MAP_DIFFUSE].texture = texture;
 
   const float mass
-  { 1.0f };
+  { 2.0f };
 
   staroid star(mass);
 
@@ -194,7 +194,7 @@ void loop()
   star.set_pos(positions[1]);
 
   const float star_factor
-  { 0.02f };
+  { 0.05f };
 
   star.set_factor(star_factor);
 
@@ -264,10 +264,18 @@ void loop()
         aster.set_vel(sphere_vector(gold, velocity_min, velocity_delta));
       }
 
-      aster.accelerate(star);
+      ///aster.accelerate(star);
+
+      aster.accelerate(mass);
       aster.fall(dialta);
 
-      if()
+      const float dist
+      { aster.get_dist() - horizon };
+
+      if (dist > 0.0f)
+      { aster.set_factor((1.0f - exp(-0.5f*dist))*vactor); }
+      else
+      { aster.set_factor(0.0f); }
     }
 
 

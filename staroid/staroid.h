@@ -28,6 +28,9 @@ private:
   const float m_mass
   { 0.0f };
 
+  float m_dist
+  { 0.0f };
+
   Vector3 m_rot
   // Spatial orientation
   { 0.0f, 0.0f, 0.0f };
@@ -71,6 +74,9 @@ public:
   Vector3 get_pos()
   const noexcept;
 
+  float get_dist()
+  const noexcept;
+
   void display()
   noexcept;
 
@@ -89,6 +95,8 @@ public:
   void rotate();
 
   void accelerate(const staroid &star);
+
+  void accelerate(const float mass);
 
   void fall(const float slice);
 
