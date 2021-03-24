@@ -42,6 +42,20 @@ noexcept
                   radius*sin(theta)};
 }
 
+Vector3 sphere_vector(auronacci &gold, const float radius_min, const float radius_delta)
+{
+  const float radius
+  { radius_min + radius_delta*gold.get_fraction() };
+
+  const float theta
+  { PI*(0.5f + theta_picker(gold.get_fraction())) };
+
+  const float phi
+  { phi_picker(gold.get_fraction()) };
+
+  return sphere_pos(radius, theta, phi);
+}
+
 void rotate_vector2(Vector2 &vec2, const float angle)
 { vec2 = Vector2{ vec2.x*cos(angle) - vec2.y*sin(angle), vec2.y*cos(angle) + vec2.x*sin(angle) }; }
 

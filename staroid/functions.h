@@ -21,6 +21,8 @@ noexcept;
 Vector3 sphere_pos(const float radius, const float theta, const float phi)
 noexcept;
 
+Vector3 sphere_vector(auronacci &gold, const float radius_min, const float radius_delta);
+
 void rotate_vector2(Vector2 &vec2, const float angle);
 
 void rotate_vector3_xyz(Vector3 &vec3, const float angle,

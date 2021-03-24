@@ -123,23 +123,13 @@ void loop()
   {
     staroid aster;
 
-    const float radius
-    { 1.0f*(1.5f + 1.0f*gold.get_fraction()) };
-
-    const float theta
-    { PI*(0.5f + 1.0f*theta_picker(gold.get_fraction())) };
-
-    const float phi
-    { 1.0f*phi_picker(gold.get_fraction()) };
-
-    const Vector3 pos
-    { sphere_pos(radius, theta, phi) };
-
-    aster.set_pos(pos);
+    aster.set_pos(sphere_vector(gold, 1.5f, 1.0f));
 
     aster.set_color(pastel);
 
     aster.set_factor(vactor);
+
+    aster.set_vel(sphere_vector(gold, 0.0f, 2.0f));
 
     stars.push_back(aster);
 
@@ -277,23 +267,9 @@ void loop()
     for (staroid &aster: stars)
     {
       if (IsKeyReleased(KEY_DELETE))
-      {
-        const float radius
-        { 1.0f*(1.5f + 1.0f*gold.get_fraction()) };
-
-        const float theta
-        { PI*(0.5f + 1.0f*theta_picker(gold.get_fraction())) };
-
-        const float phi
-        { 1.0f*phi_picker(gold.get_fraction()) };
-
-        const Vector3 pos
-        { sphere_pos(radius, theta, phi) };
-
-        aster.set_pos(pos);
-
-        aster.set_vel(Vector3{ 0.0f, 0.0f, 0.0f });
-
+      {        
+        aster.set_pos(sphere_vector(gold, 1.5f, 1.0f));
+        aster.set_vel(sphere_vector(gold, 0.0f, 2.0f));
       }
 
       aster.accelerate(star);

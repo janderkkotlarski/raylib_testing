@@ -12,7 +12,7 @@ void auronacci::cycle()
 
  m_second = m_first;
 
- m_first = temp;
+ m_first = abs(temp);
 }
 
 void auronacci::cycle(const int max)
@@ -34,11 +34,6 @@ float auronacci::get_fraction()
 
   const float fraction
   { float(m_first)/float(m_max) };
-
-  if (fraction < 0.0f ||
-      fraction > 1.0f ||
-      true)
-  { std::cout << "fraction = " << fraction <<std::endl; }
 
   return fraction;
 }
