@@ -34,7 +34,7 @@ void loop()
 
 
   Vector3 cam_pos
-  { 16.0f, 0.0f, 0.0f };
+  { 12.0f, 0.0f, 0.0f };
 
   Vector3 cam_target
   { 0.0f, 0.0f, 0.0f };
@@ -111,19 +111,19 @@ void loop()
   std::vector <staroid> stars;
 
   const float horizon
-  { 3.0f };
+  { 2.75f };
 
   const float radius_min
-  { 0.00f };
+  { 1.5f };
 
   const float radius_delta
-  { 0.00f };
+  { 0.0f };
 
   const float velocity_min
-  { 10.000f };
+  { 5.000f };
 
   const float velocity_delta
-  { 0.000f };
+  { 5.000f };
 
   for (int count{ 0 }; count < star_max; ++count)
   {
