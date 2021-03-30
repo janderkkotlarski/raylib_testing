@@ -166,8 +166,8 @@ void loop()
 
   Shader shader
   {
-    LoadShader(TextFormat("base_lighting.vs", GLSL_VERSION),
-               TextFormat("lighting.fs", GLSL_VERSION))
+    LoadShader("base_lighting.vs",
+               "lighting.fs")
   };
 
   shader.locs[LOC_MATRIX_MODEL] = GetShaderLocation(shader, "matModel");
@@ -224,6 +224,13 @@ void loop()
 
   const float dial
   { 0.1f*2.0f*PI };
+
+  Shader post_shader
+  { LoadShader(0, "bloom.fs") };
+
+  RenderTexture2D target = LoadRenderTexture(screenWidth, screenHeight);
+
+
 
   // Main game loop
   while (!WindowShouldClose())            // Detect window close button or ESC key
@@ -285,19 +292,30 @@ void loop()
     {
       BeginDrawing();
       {
-        ClearBackground(BLACK);
-
-        BeginMode3D(camera);
+        BeginTextureMode(target);
         {
-          // DrawModel(model, positions[0], factor, pastel_electric);
+          ClearBackground(BLACK);
 
-          // star.display();
+          BeginMode3D(camera);
+          {
+            // DrawModel(model, positions[0], factor, pastel_electric);
 
-          for (staroid &aster: stars)
-          { aster.display(); }
+            // star.display();
+
+            for (staroid &aster: stars)
+            { aster.display(); }
+          }
+          EndMode3D();
         }
+        EndTextureMode();
 
-        EndMode3D();
+        BeginShaderMode(post_shader);
+        {
+          // NOTE: Render texture must be y-flipped due to default OpenGL coordinates (left-bottom)
+
+          DrawTextureRec(target.texture, (Rectangle){ 0, 0, (float)target.texture.width, (float)-target.texture.height }, (Vector2){ 0, 0 }, WHITE);
+        }
+        EndShaderMode();
 
         // DrawFPS(10, 10);
 
