@@ -80,7 +80,7 @@ void loop()
   };
 
   const Vector3 rotate
-  { PI/4.0f, PI/4.0f, 0.0f*PI/4.0f };
+  { 0.0f*PI/4.0f, 1.0f*PI/4.0f, 0.75f*PI/4.0f };
 
   model.transform = MatrixRotateXYZ(rotate);
 
@@ -163,7 +163,6 @@ void loop()
     const float dialta
     { dial*float(delta.count())/1000000000.0f };
 
-    /*
 
     star_phi += dialta*delta_phi;
 
@@ -172,7 +171,7 @@ void loop()
 
 
     star.rotate();
-    */
+
 
     // Update
     //----------------------------------------------------------------------------------
@@ -198,7 +197,7 @@ void loop()
 
           BeginMode3D(camera);
           {
-            // DrawModel(model, positions[0], factor, pastel_electric);
+            DrawModel(model, positions[0], star_factor, Color{ 31, 31, 31, 255});
 
             // star.display();
 
