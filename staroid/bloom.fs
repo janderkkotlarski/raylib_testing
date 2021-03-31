@@ -13,9 +13,9 @@ out vec4 finalColor;
 
 // NOTE: Add here your custom variables
 
-const vec2 size = vec2(800, 450);   // render size
-const float samples = 5.0;          // pixels per axis; higher = bigger glow, worse performance
-const float quality = 4.5; 	        // lower = smaller glow, better quality
+const vec2 size = vec2(800, 800);   // render size
+const float samples = 8.0;          // pixels per axis; higher = bigger glow, worse performance
+const float quality = 5.0; 	        // lower = smaller glow, better quality
 
 void main()
 {
@@ -25,11 +25,13 @@ void main()
     // Texel color fetching from texture sampler
     vec4 source = texture(texture0, fragTexCoord);
 
-    const int range = 2;            // should be = (samples - 1)/2;
+    const float range = 1.0;            // should be = (samples - 1)/2;
 
-    for (int x = -range; x <= range; x++)
+    const float step = 0.25;
+
+    for (float x = -range; x <= range; x += step)
     {
-        for (int y = -range; y <= range; y++)
+        for (float y = -range; y <= range; y += step)
         {
             sum += texture(texture0, fragTexCoord + vec2(x, y)*sizeFactor);
         }

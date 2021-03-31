@@ -40,6 +40,11 @@ void stellarator(std::vector<staroid> &stars,
                  auronacci &gold)
 noexcept;
 
+void astral_mechanics(std::vector <staroid> &stars,
+                      const float factor,
+                      const float time_slice)
+noexcept;
+
 #endif // FUNCTIONS_H
 
 

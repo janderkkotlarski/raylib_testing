@@ -176,3 +176,29 @@ noexcept
     aster.set_vel(sphere_vector(gold, velocity_min, velocity_delta));
   }
 }
+
+void astral_mechanics(std::vector <staroid> &stars,
+                      const float factor,
+                      const float time_slice)
+noexcept
+{
+  for (staroid &aster: stars)
+  {
+    const float mass
+    { 2.0f };
+
+    const float horizon
+    { 2.75f };
+
+    aster.accelerate(mass);
+    aster.fall(time_slice);
+
+    const float dist
+    { aster.get_dist() - horizon };
+
+    if (dist > 0.0f)
+    { aster.set_factor((1.0f - exp(-0.5f*dist))*factor); }
+    else
+    { aster.set_factor(0.0f); }
+  }
+}

@@ -23,8 +23,6 @@
 
 void loop()
 {
-
-
   auronacci gold;
 
   const int screenWidth = 800;
@@ -32,7 +30,6 @@ void loop()
 
   SetConfigFlags(FLAG_MSAA_4X_HINT);  // Enable Multi Sampling Anti Aliasing 4x (if available)
   InitWindow(screenWidth, screenHeight, "STAROID");
-
 
   Vector3 cam_pos
   { 12.0f, 0.0f, 0.0f };
@@ -58,26 +55,21 @@ void loop()
   { pastelbow() };
 
   const float aster_factor
-  { 0.01f };
+  { 0.015f };
 
   std::vector <staroid> stars
   { star_nursery(aster_factor) };
 
   stellarator(stars, gold);
 
-
-  const float horizon
-  { 2.75f };
-
   const Texture texture
   { LoadTextureFromImage(GenImageColor(1000, 1000, WHITE)) };
 
   model.materials[0].maps[MAP_DIFFUSE].texture = texture;
 
-  const float mass
-  { 2.0f };
 
-  staroid star(mass);
+
+  staroid star;
 
   star.set_texture(texture);
 
@@ -168,8 +160,6 @@ void loop()
 
     time_1 = std::chrono::steady_clock::now();
 
-
-
     const float dialta
     { dial*float(delta.count())/1000000000.0f };
 
@@ -190,29 +180,10 @@ void loop()
 
     //----------------------------------------------------------------------------------
 
-    // if (IsKeyReleased(KEY_DELETE))
-    // { stellarator(stars, gold); }
+    if (IsKeyReleased(KEY_DELETE))
+    { stellarator(stars, gold); }
 
-
-
-    for (staroid &aster: stars)
-    {      
-      ///aster.accelerate(star);
-
-      aster.accelerate(mass);
-      aster.fall(dialta);
-
-      const float dist
-      { aster.get_dist() - horizon };
-
-      if (dist > 0.0f)
-      { aster.set_factor((1.0f - exp(-0.5f*dist))*aster_factor); }
-      else
-      { aster.set_factor(0.0f); }
-    }
-
-
-
+    astral_mechanics(stars, aster_factor, dialta);
 
     // Draw
     //----------------------------------------------------------------------------------
@@ -238,8 +209,6 @@ void loop()
         }
         EndTextureMode();
 
-
-
         BeginShaderMode(post_shader);
         {
           // NOTE: Render texture must be y-flipped due to default OpenGL coordinates (left-bottom)
@@ -248,10 +217,9 @@ void loop()
         }
         EndShaderMode();
 
-
-
-
         // DrawFPS(10, 10);
+
+        /*
 
         const int max
         { 10 };
@@ -262,6 +230,8 @@ void loop()
         char num_char[max + sizeof(char)];
 
         std::to_chars(num_char, num_char + max, number);
+
+        */
 
         // DrawText(num_char, 10, 50, 20, WHITE);
 
