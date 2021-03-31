@@ -130,15 +130,34 @@ noexcept
   };
 }
 
-void stellarator(std::vector <staroid> &stars, auronacci &gold)
+std::vector <staroid> star_nursery(const float factor)
 noexcept
 {
   const int star_max
   { 200 };
 
-  float vactor
-  { 0.01f };
+  const std::vector <Color> pastels
+  { pastelbow() };
 
+  std::vector <staroid> stars;
+
+  for (int count{ 0 }; count < star_max; ++count)
+  {
+    staroid aster;
+
+    aster.set_color(pastels[count % pastels.size()]);
+    aster.set_factor(factor);
+
+    stars.push_back(aster);
+  }
+
+  return stars;
+}
+
+void stellarator(std::vector <staroid> &stars,
+                 auronacci &gold)
+noexcept
+{
   const float radius_min
   { 1.5f };
 
@@ -151,28 +170,9 @@ noexcept
   const float velocity_delta
   { 5.000f };
 
-  const std::vector <Color> pastels
-  { pastelbow() };
-
-  if (stars.size() == 0)
+  for (staroid &aster: stars)
   {
-    for (int count{ 0 }; count < star_max; ++count)
-    {
-      staroid aster;
-
-      aster.set_color(pastels[count % pastels.size()]);
-      aster.set_factor(vactor);
-
-      stars.push_back(aster);
-    }
-  }
-
-  if (stars.size() == star_max)
-  {
-    for (staroid &aster: stars)
-    {
-      aster.set_pos(sphere_vector(gold, radius_min, radius_delta));
-      aster.set_vel(sphere_vector(gold, velocity_min, velocity_delta));
-    }
+    aster.set_pos(sphere_vector(gold, radius_min, radius_delta));
+    aster.set_vel(sphere_vector(gold, velocity_min, velocity_delta));
   }
 }

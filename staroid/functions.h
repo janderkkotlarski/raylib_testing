@@ -33,7 +33,11 @@ void rotate_vector3_xyz(Vector3 &vec3, const float angle,
 std::vector <Color> pastelbow()
 noexcept;
 
-void stellarator(std::vector<staroid> &stars, auronacci &gold)
+std::vector <staroid> star_nursery(const float factor)
+noexcept;
+
+void stellarator(std::vector<staroid> &stars,
+                 auronacci &gold)
 noexcept;
 
 #endif // FUNCTIONS_H

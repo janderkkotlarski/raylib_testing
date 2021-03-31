@@ -57,15 +57,13 @@ void loop()
   const std::vector <Color> pastels
   { pastelbow() };
 
+  const float aster_factor
+  { 0.01f };
 
-  std::vector <staroid> stars;
-
-
+  std::vector <staroid> stars
+  { star_nursery(aster_factor) };
 
   stellarator(stars, gold);
-
-
-
 
 
   const float horizon
@@ -160,10 +158,6 @@ void loop()
 
   RenderTexture2D target = LoadRenderTexture(screenWidth, screenHeight);
 
-
-
-
-
   // Main game loop
   while (!WindowShouldClose())            // Detect window close button or ESC key
   {
@@ -174,10 +168,12 @@ void loop()
 
     time_1 = std::chrono::steady_clock::now();
 
-    /*
+
 
     const float dialta
     { dial*float(delta.count())/1000000000.0f };
+
+    /*
 
     star_phi += dialta*delta_phi;
 
@@ -197,7 +193,7 @@ void loop()
     // if (IsKeyReleased(KEY_DELETE))
     // { stellarator(stars, gold); }
 
-    /*
+
 
     for (staroid &aster: stars)
     {      
@@ -210,12 +206,12 @@ void loop()
       { aster.get_dist() - horizon };
 
       if (dist > 0.0f)
-      { aster.set_factor((1.0f - exp(-0.5f*dist))*aster.get_factor()); }
+      { aster.set_factor((1.0f - exp(-0.5f*dist))*aster_factor); }
       else
       { aster.set_factor(0.0f); }
     }
 
-    */
+
 
 
     // Draw
@@ -224,8 +220,6 @@ void loop()
     {
       BeginDrawing();
       {
-        ClearBackground(BLACK);
-        /*
 
         BeginTextureMode(target);
         {
@@ -237,8 +231,8 @@ void loop()
 
             // star.display();
 
-            // for (staroid &aster: stars)
-            // { aster.display(); }
+            for (staroid &aster: stars)
+            { aster.display(); }
           }
           EndMode3D();
         }
@@ -254,7 +248,6 @@ void loop()
         }
         EndShaderMode();
 
-        */
 
 
 
@@ -270,14 +263,11 @@ void loop()
 
         std::to_chars(num_char, num_char + max, number);
 
-        DrawText(num_char, 10, 50, 20, WHITE);
-
-        // std::cout << stars.size() << std::endl;
+        // DrawText(num_char, 10, 50, 20, WHITE);
 
       }
       EndDrawing();
 
-      std::cout << "After" << std::endl;
     }
     //----------------------------------------------------------------------------------
     ++frames;
