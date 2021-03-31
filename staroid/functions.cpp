@@ -81,3 +81,98 @@ void rotate_vector3_xyz(Vector3 &vec3, const float angle,
   else if (z)
   { vec3 = Vector3{ vec2.x, vec2.y, vec3.z }; }
 }
+
+std::vector <Color> pastelbow()
+noexcept
+{
+  const Color pastel_red
+  { 255, 63, 63, 255 };
+
+  const Color pastel_orange
+  { 255, 160, 63, 255 };
+
+  const Color pastel_yellow
+  { 255, 255, 63, 255 };
+
+  const Color pastel_lime
+  { 160, 255, 63, 255 };
+
+  const Color pastel_green
+  { 63, 255, 63, 255 };
+
+  const Color pastel_viridian
+  { 63, 255, 160, 255 };
+
+  const Color pastel_turquoise
+  { 63, 255, 255, 255 };
+
+  const Color pastel_electric
+  { 63, 160, 255, 255 };
+
+  const Color pastel_blue
+  { 63, 63, 255, 255 };
+
+  const Color pastel_indigo
+  { 160, 63, 255, 255 };
+
+  const Color pastel_violet
+  { 255, 63, 255, 255 };
+
+  const Color pastel_purple
+  { 255, 63, 160, 255 };
+
+
+  return  std::vector <Color>
+  {
+    pastel_red, pastel_orange, pastel_yellow, pastel_lime,
+    pastel_green, pastel_viridian, pastel_turquoise, pastel_electric,
+    pastel_blue, pastel_indigo, pastel_violet, pastel_purple
+  };
+}
+
+void stellarator(std::vector <staroid> &stars, auronacci &gold)
+noexcept
+{
+  const int star_max
+  { 200 };
+
+  float vactor
+  { 0.01f };
+
+  const float radius_min
+  { 1.5f };
+
+  const float radius_delta
+  { 0.0f };
+
+  const float velocity_min
+  { 5.000f };
+
+  const float velocity_delta
+  { 5.000f };
+
+  const std::vector <Color> pastels
+  { pastelbow() };
+
+  if (stars.size() == 0)
+  {
+    for (int count{ 0 }; count < star_max; ++count)
+    {
+      staroid aster;
+
+      aster.set_color(pastels[count % pastels.size()]);
+      aster.set_factor(vactor);
+
+      stars.push_back(aster);
+    }
+  }
+
+  if (stars.size() == star_max)
+  {
+    for (staroid &aster: stars)
+    {
+      aster.set_pos(sphere_vector(gold, radius_min, radius_delta));
+      aster.set_vel(sphere_vector(gold, velocity_min, velocity_delta));
+    }
+  }
+}

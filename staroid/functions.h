@@ -2,11 +2,13 @@
 #define FUNCTIONS_H
 
 #include <chrono>
+#include <vector>
 
 #include "raylib.h"
 #include "raymath.h"
 
 #include "auronacci.h"
+#include "staroid.h"
 
 float chronolizer(std::chrono::steady_clock::time_point &time);
 
@@ -27,6 +29,12 @@ void rotate_vector2(Vector2 &vec2, const float angle);
 
 void rotate_vector3_xyz(Vector3 &vec3, const float angle,
                         const bool x, const bool y, const bool z);
+
+std::vector <Color> pastelbow()
+noexcept;
+
+void stellarator(std::vector<staroid> &stars, auronacci &gold)
+noexcept;
 
 #endif // FUNCTIONS_H
 

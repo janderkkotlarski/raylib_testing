@@ -21,6 +21,10 @@ float staroid::get_dist()
 const noexcept
 { return m_dist; }
 
+float staroid::get_factor()
+const noexcept
+{ return m_factor; }
+
 void staroid::display()
 noexcept
 {

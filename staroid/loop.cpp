@@ -3,6 +3,7 @@
 #include <vector>
 #include <chrono>
 #include <charconv>
+#include <iostream>
 
 #include "raylib.h"
 #include "raymath.h"
@@ -48,98 +49,27 @@ void loop()
   camera.target = cam_target;      // Camera looking at point
   camera.up = cam_up;          // Camera up vector (rotation towards target)
   camera.fovy = 45.0f;                                // Camera field-of-view Y
-  camera.type = CAMERA_PERSPECTIVE;                   // Camera mode type
-
-
+  camera.type = CAMERA_PERSPECTIVE;                  // Camera mode type
 
   Model model
   { LoadModel("staroid.obj") };
 
-  const Color pastel_red
-  { 255, 63, 63, 255 };
-
-  const Color pastel_orange
-  { 255, 160, 63, 255 };
-
-  const Color pastel_yellow
-  { 255, 255, 63, 255 };
-
-  const Color pastel_lime
-  { 160, 255, 63, 255 };
-
-  const Color pastel_green
-  { 63, 255, 63, 255 };
-
-  const Color pastel_viridian
-  { 63, 255, 160, 255 };
-
-  const Color pastel_turquoise
-  { 63, 255, 255, 255 };
-
-  const Color pastel_electric
-  { 63, 160, 255, 255 };
-
-  const Color pastel_blue
-  { 63, 63, 255, 255 };
-
-  const Color pastel_indigo
-  { 160, 63, 255, 255 };
-
-  const Color pastel_violet
-  { 255, 63, 255, 255 };
-
-  const Color pastel_purple
-  { 255, 63, 160, 255 };
-
-
   const std::vector <Color> pastels
-  {
-    pastel_red, pastel_orange, pastel_yellow, pastel_lime,
-    pastel_green, pastel_viridian, pastel_turquoise, pastel_electric,
-    pastel_blue, pastel_indigo, pastel_violet, pastel_purple
-  };
+  { pastelbow() };
 
-  const int amount
-  { int(pastels.size()) };
-
-  const int star_max
-  { 200 };
-
-  float vactor
-  { 0.01f };
 
   std::vector <staroid> stars;
 
+
+
+  stellarator(stars, gold);
+
+  std::cout << "Before" << std::endl;
+
+
+
   const float horizon
   { 2.75f };
-
-  const float radius_min
-  { 1.5f };
-
-  const float radius_delta
-  { 0.0f };
-
-  const float velocity_min
-  { 5.000f };
-
-  const float velocity_delta
-  { 5.000f };
-
-  for (int count{ 0 }; count < star_max; ++count)
-  {
-    staroid aster;    
-
-    aster.set_color(pastels[count % pastels.size()]);
-
-    aster.set_factor(vactor);
-
-    aster.set_pos(sphere_vector(gold, radius_min, radius_delta));
-    aster.set_vel(sphere_vector(gold, velocity_min, velocity_delta));
-
-    stars.push_back(aster);
-  }
-
-
 
   const Texture texture
   { LoadTextureFromImage(GenImageColor(1000, 1000, WHITE)) };
@@ -232,6 +162,8 @@ void loop()
 
 
 
+  std::cout << "After" << std::endl;
+
   // Main game loop
   while (!WindowShouldClose())            // Detect window close button or ESC key
   {
@@ -262,15 +194,11 @@ void loop()
 
     //----------------------------------------------------------------------------------
 
+    if (IsKeyReleased(KEY_DELETE))
+    { stellarator(stars, gold); }
 
     for (staroid &aster: stars)
-    {
-      if (IsKeyReleased(KEY_DELETE))
-      {        
-        aster.set_pos(sphere_vector(gold, radius_min, radius_delta));
-        aster.set_vel(sphere_vector(gold, velocity_min, velocity_delta));
-      }
-
+    {      
       ///aster.accelerate(star);
 
       aster.accelerate(mass);
@@ -280,7 +208,7 @@ void loop()
       { aster.get_dist() - horizon };
 
       if (dist > 0.0f)
-      { aster.set_factor((1.0f - exp(-0.5f*dist))*vactor); }
+      { aster.set_factor((1.0f - exp(-0.5f*dist))*aster.get_factor()); }
       else
       { aster.set_factor(0.0f); }
     }

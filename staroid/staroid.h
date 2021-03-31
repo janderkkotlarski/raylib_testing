@@ -77,6 +77,9 @@ public:
   float get_dist()
   const noexcept;
 
+  float get_factor()
+  const noexcept;
+
   void display()
   noexcept;
 
