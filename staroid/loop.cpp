@@ -64,7 +64,7 @@ void loop()
 
   stellarator(stars, gold);
 
-  std::cout << "Before" << std::endl;
+
 
 
 
@@ -162,7 +162,7 @@ void loop()
 
 
 
-  std::cout << "After" << std::endl;
+
 
   // Main game loop
   while (!WindowShouldClose())            // Detect window close button or ESC key
@@ -174,8 +174,7 @@ void loop()
 
     time_1 = std::chrono::steady_clock::now();
 
-
-
+    /*
 
     const float dialta
     { dial*float(delta.count())/1000000000.0f };
@@ -187,6 +186,7 @@ void loop()
 
 
     star.rotate();
+    */
 
     // Update
     //----------------------------------------------------------------------------------
@@ -194,8 +194,10 @@ void loop()
 
     //----------------------------------------------------------------------------------
 
-    if (IsKeyReleased(KEY_DELETE))
-    { stellarator(stars, gold); }
+    // if (IsKeyReleased(KEY_DELETE))
+    // { stellarator(stars, gold); }
+
+    /*
 
     for (staroid &aster: stars)
     {      
@@ -213,6 +215,8 @@ void loop()
       { aster.set_factor(0.0f); }
     }
 
+    */
+
 
     // Draw
     //----------------------------------------------------------------------------------
@@ -220,6 +224,9 @@ void loop()
     {
       BeginDrawing();
       {
+        ClearBackground(BLACK);
+        /*
+
         BeginTextureMode(target);
         {
           ClearBackground(BLACK);
@@ -230,12 +237,14 @@ void loop()
 
             // star.display();
 
-            for (staroid &aster: stars)
-            { aster.display(); }
+            // for (staroid &aster: stars)
+            // { aster.display(); }
           }
           EndMode3D();
         }
         EndTextureMode();
+
+
 
         BeginShaderMode(post_shader);
         {
@@ -244,6 +253,10 @@ void loop()
           DrawTextureRec(target.texture, (Rectangle){ 0, 0, (float)target.texture.width, (float)-target.texture.height }, (Vector2){ 0, 0 }, WHITE);
         }
         EndShaderMode();
+
+        */
+
+
 
         // DrawFPS(10, 10);
 
@@ -257,9 +270,14 @@ void loop()
 
         std::to_chars(num_char, num_char + max, number);
 
-        // DrawText(num_char, 10, 50, 20, WHITE);
+        DrawText(num_char, 10, 50, 20, WHITE);
+
+        // std::cout << stars.size() << std::endl;
+
       }
       EndDrawing();
+
+      std::cout << "After" << std::endl;
     }
     //----------------------------------------------------------------------------------
     ++frames;
