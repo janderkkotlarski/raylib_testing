@@ -59,10 +59,12 @@ SOURCES += \
         functions.cpp \
         loop.cpp \
         main.cpp \
+        spheroid_2d.cpp \
         staroid.cpp
 
 HEADERS += \
   auronacci.h \
   functions.h \
   loop.h \
+  spheroid_2d.h \
   staroid.h
