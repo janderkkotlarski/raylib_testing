@@ -14,6 +14,7 @@
 #include "staroid.h"
 #include "functions.h"
 #include "auronacci.h"
+#include "spheroid_2d.h"
 
 #if defined(PLATFORM_DESKTOP)
     #define GLSL_VERSION            330
@@ -150,6 +151,8 @@ void loop()
 
   RenderTexture2D target = LoadRenderTexture(screenWidth, screenHeight);
 
+  spheroid_2d circle;
+
   // Main game loop
   while (!WindowShouldClose())            // Detect window close button or ESC key
   {
@@ -168,6 +171,8 @@ void loop()
 
     if (star_phi > 2.0f*PI)
     { star_phi -= 2.0f*PI; }
+
+    circle.rotate(dialta);
 
 
     star.rotate();
@@ -201,12 +206,16 @@ void loop()
 
             // star.display();
 
+            circle.display();
+
             for (staroid &aster: stars)
             { aster.display(); }
           }
           EndMode3D();
         }
         EndTextureMode();
+
+
 
         BeginShaderMode(post_shader);
         {
