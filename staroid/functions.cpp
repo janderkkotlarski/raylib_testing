@@ -154,6 +154,15 @@ noexcept
   return stars;
 }
 
+Color random_pastel(auronacci &gold)
+noexcept
+{
+  const std::vector <Color> pastels
+  { pastelbow() };
+
+  return pastels[gold.get_number() % pastels.size()];
+}
+
 void stellarator(std::vector <staroid> &stars,
                  auronacci &gold)
 noexcept

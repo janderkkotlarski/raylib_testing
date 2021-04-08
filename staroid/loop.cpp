@@ -33,13 +33,13 @@ void loop()
   InitWindow(screenWidth, screenHeight, "STAROID");
 
   Vector3 cam_pos
-  { 12.0f, 0.0f, 0.0f };
+  { 0.0f, 0.0f, 12.0f };
 
   Vector3 cam_target
   { 0.0f, 0.0f, 0.0f };
 
   Vector3 cam_up
-  { 0.0f, 0.0f, 1.0f };
+  { 0.0f, 1.0f, 0.0f };
 
   Camera camera
   { 0 };
@@ -71,7 +71,6 @@ void loop()
 
 
   staroid star;
-
   star.set_texture(texture);
 
   std::vector <Vector3> positions
@@ -81,7 +80,7 @@ void loop()
   };
 
   const Vector3 rotate
-  { 0.0f*PI/4.0f, 1.0f*PI/4.0f, 0.75f*PI/4.0f };
+  { 1.0f*PI/4.0f, 1.0f*PI/4.0f, 0.75f*PI/4.0f };
 
   model.transform = MatrixRotateXYZ(rotate);
 
@@ -102,16 +101,12 @@ void loop()
   SetShaderValue(shader, ambientLoc, floats, UNIFORM_VEC4);
 
   model.materials[0].shader = shader;
-
   star.set_shading(shader);
 
   for (staroid &aster: stars)
   { aster.set_shading(shader); }
 
-
-
   star.set_color(WHITE);
-
   star.set_pos(positions[1]);
 
   const float star_factor
@@ -151,7 +146,7 @@ void loop()
 
   RenderTexture2D target = LoadRenderTexture(screenWidth, screenHeight);
 
-  spheroid_2d circle;
+  spheroid_2d circle(gold);
 
   // Main game loop
   while (!WindowShouldClose())            // Detect window close button or ESC key
@@ -166,17 +161,13 @@ void loop()
     const float dialta
     { dial*float(delta.count())/1000000000.0f };
 
-
     star_phi += dialta*delta_phi;
 
     if (star_phi > 2.0f*PI)
     { star_phi -= 2.0f*PI; }
 
     circle.rotate(dialta);
-
-
     star.rotate();
-
 
     // Update
     //----------------------------------------------------------------------------------
@@ -185,7 +176,10 @@ void loop()
     //----------------------------------------------------------------------------------
 
     if (IsKeyReleased(KEY_DELETE))
-    { stellarator(stars, gold); }
+    {
+      stellarator(stars, gold);
+      circle.recolor(gold);
+    }
 
     astral_mechanics(stars, aster_factor, dialta);
 
@@ -195,10 +189,11 @@ void loop()
     {
       BeginDrawing();
       {
-
         BeginTextureMode(target);
         {
           ClearBackground(BLACK);
+
+          DrawCircle(screenWidth/2, screenHeight/2, 150, Color{15, 15, 15, 127});
 
           BeginMode3D(camera);
           {
@@ -214,8 +209,6 @@ void loop()
           EndMode3D();
         }
         EndTextureMode();
-
-
 
         BeginShaderMode(post_shader);
         {
@@ -242,16 +235,12 @@ void loop()
         */
 
         // DrawText(num_char, 10, 50, 20, WHITE);
-
       }
       EndDrawing();
-
     }
     //----------------------------------------------------------------------------------
     ++frames;
     frames %= frame_max;
-
-
   }
 
   // De-Initialization
@@ -259,7 +248,6 @@ void loop()
 
   UnloadMaterial(model.materials[0]); // Unload material: shader and textures
   UnloadModel(model);         // Unload model
-
 
   CloseWindow();
 }

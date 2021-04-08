@@ -33,6 +33,9 @@ void rotate_vector3_xyz(Vector3 &vec3, const float angle,
 std::vector <Color> pastelbow()
 noexcept;
 
+Color random_pastel(auronacci &gold)
+noexcept;
+
 std::vector <staroid> star_nursery(const float factor)
 noexcept;
 
