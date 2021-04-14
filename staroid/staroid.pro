@@ -56,15 +56,17 @@ LIBS += -LC:\raylib\
 
 SOURCES += \
         auronacci.cpp \
+        circloid.cpp \
+        disk.cpp \
         functions.cpp \
         loop.cpp \
         main.cpp \
-        spheroid_2d.cpp \
         staroid.cpp
 
 HEADERS += \
   auronacci.h \
+  circloid.h \
+  disk.h \
   functions.h \
   loop.h \
-  spheroid_2d.h \
   staroid.h

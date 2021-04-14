@@ -14,7 +14,8 @@
 #include "staroid.h"
 #include "functions.h"
 #include "auronacci.h"
-#include "spheroid_2d.h"
+#include "circloid.h"
+#include "disk.h"
 
 #if defined(PLATFORM_DESKTOP)
     #define GLSL_VERSION            330
@@ -146,7 +147,9 @@ void loop()
 
   RenderTexture2D target = LoadRenderTexture(screenWidth, screenHeight);
 
-  spheroid_2d circle(gold);
+  circloid circle(gold);
+
+  disk disc;
 
   // Main game loop
   while (!WindowShouldClose())            // Detect window close button or ESC key
@@ -189,25 +192,17 @@ void loop()
     {
       BeginDrawing();
       {
+        ClearBackground(BLACK);
+
         BeginTextureMode(target);
-        {
           ClearBackground(BLACK);
+        EndTextureMode();
 
-          DrawCircle(screenWidth/2, screenHeight/2, 150, Color{15, 15, 15, 127});
-
+        BeginTextureMode(target);
           BeginMode3D(camera);
-          {
-            DrawModel(model, positions[0], star_factor, Color{ 31, 31, 31, 255});
-
-            // star.display();
-
-            circle.display();
-
             for (staroid &aster: stars)
             { aster.display(); }
-          }
           EndMode3D();
-        }
         EndTextureMode();
 
         BeginShaderMode(post_shader);
@@ -217,6 +212,15 @@ void loop()
           DrawTextureRec(target.texture, (Rectangle){ 0, 0, (float)target.texture.width, (float)-target.texture.height }, (Vector2){ 0, 0 }, WHITE);
         }
         EndShaderMode();
+
+        BeginMode3D(camera);
+          circle.display();
+        EndMode3D();
+
+
+
+
+
 
         // DrawFPS(10, 10);
 

@@ -1,5 +1,5 @@
-#ifndef SPHEROID_2D_H
-#define SPHEROID_2D_H
+#ifndef CIRCLOID_H
+#define CIRCLOID_H
 
 #include <math.h>
 
@@ -7,7 +7,7 @@
 
 #include "auronacci.h"
 
-class spheroid_2d
+class circloid
 {
 private:
   Color m_color
@@ -47,10 +47,10 @@ private:
   { 2.5f*sqrt(2.0f) };
 
 public:
-  spheroid_2d()
+  circloid()
   noexcept;
 
-  spheroid_2d(auronacci &gold)
+  circloid(auronacci &gold)
   noexcept;
 
   void recolor(auronacci &gold)
@@ -63,4 +63,4 @@ public:
   noexcept;
 };
 
-#endif // SPHEROID_2D_H
+#endif // CIRCLOID_H

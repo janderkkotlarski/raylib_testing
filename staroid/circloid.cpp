@@ -1,24 +1,24 @@
-#include "spheroid_2d.h"
+#include "circloid.h"
 
 #include "functions.h"
 
-spheroid_2d::spheroid_2d()
+circloid::circloid()
 noexcept
 {}
 
-spheroid_2d::spheroid_2d(auronacci &gold)
+circloid::circloid(auronacci &gold)
 noexcept
 { recolor(gold); }
 
-void spheroid_2d::recolor(auronacci &gold)
+void circloid::recolor(auronacci &gold)
 noexcept
 { m_color = random_pastel(gold); }
 
-void spheroid_2d::display()
+void circloid::display()
 const noexcept
 { DrawCircle3D(m_pos, m_radius, m_dir, m_angle, m_color); }
 
-void spheroid_2d::rotate(const float delta_angle)
+void circloid::rotate(const float delta_angle)
 noexcept
 {
   m_angle += m_scale*delta_angle;
