@@ -42,7 +42,7 @@ void staroid::init()
     m_factor *= 4.0f;
   }
 
-  m_model = LoadModel("staroid.obj");
+  m_model = LoadModel("staroid_025.obj");
 }
 
 void staroid::timer()
