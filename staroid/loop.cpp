@@ -1,12 +1,11 @@
 #include "loop.h"
 
-#include <vector>
 #include <chrono>
 #include <charconv>
 #include <iostream>
 
-#include "raylib.h"
 #include "raymath.h"
+
 
 #define RLIGHTS_IMPLEMENTATION
 #include "rlights.h"
@@ -17,11 +16,15 @@
 #include "circloid.h"
 #include "disk.h"
 
+
+
+
 #if defined(PLATFORM_DESKTOP)
     #define GLSL_VERSION            330
 #else   // PLATFORM_RPI, PLATFORM_ANDROID, PLATFORM_WEB
     #define GLSL_VERSION            100
 #endif
+
 
 void loop()
 {
@@ -51,7 +54,7 @@ void loop()
   camera.type = CAMERA_PERSPECTIVE;                  // Camera mode type
 
   Model model
-  { LoadModel("staroid.obj") };
+  { LoadModel("staroid_025.obj") };
 
   const std::vector <Color> pastels
   { pastelbow() };
@@ -64,15 +67,6 @@ void loop()
 
   stellarator(stars, gold);
 
-  const Texture texture
-  { LoadTextureFromImage(GenImageColor(1000, 1000, WHITE)) };
-
-  model.materials[0].maps[MAP_DIFFUSE].texture = texture;
-
-
-
-  staroid star;
-  star.set_texture(texture);
 
   std::vector <Vector3> positions
   {
@@ -102,21 +96,17 @@ void loop()
   SetShaderValue(shader, ambientLoc, floats, UNIFORM_VEC4);
 
   model.materials[0].shader = shader;
-  star.set_shading(shader);
 
   for (staroid &aster: stars)
   { aster.set_shading(shader); }
 
-  star.set_color(WHITE);
-  star.set_pos(positions[1]);
-
   const float star_factor
   { 0.05f };
 
-  star.set_factor(star_factor);
-
   Light light
   { CreateLight(LIGHT_POINT, cam_pos, cam_target, WHITE, shader) };
+
+
 
   SetTargetFPS(10000);                       // Set our game to run at 60 frames-per-second
   //--------------------------------------------------------------------------------------
@@ -170,7 +160,6 @@ void loop()
     { star_phi -= 2.0f*PI; }
 
     circle.rotate(dialta);
-    star.rotate();
 
     // Update
     //----------------------------------------------------------------------------------

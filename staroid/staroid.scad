@@ -1,4 +1,4 @@
-resolution = 100;
+resolution = 25;
 
 difference()
 {

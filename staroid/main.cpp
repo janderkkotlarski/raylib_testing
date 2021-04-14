@@ -1,8 +1,4 @@
-#include <iostream>
-
 #include "loop.h"
-
-#include "raylib.h"
 
 int main()
 {
