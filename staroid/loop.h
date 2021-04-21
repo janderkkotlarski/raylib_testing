@@ -2,6 +2,7 @@
 #define LOOP_H
 
 #include <vector>
+#include <chrono>
 
 #include "raylib.h"
 
@@ -11,15 +12,24 @@
 class loop
 {
 private:
+
+  const float m_angle
+  { 0.1f*2.0f*PI };
+
+  int m_tick
+  { 0 };
+
+  const int m_tick_max
+  { 100 };
+
+  const int m_fps
+  { 100 };
+
   auronacci m_gold;
   // The fibonacci sequence pseudo-random generator
 
-
-
   const int m_screen_width = 800;
   const int m_screen_height = 800;
-
-
 
   Vector3 m_cam_pos
   { 0.0f, 0.0f, 12.0f };
@@ -61,6 +71,8 @@ private:
                "lighting.fs")
   };
   */
+
+  void tick();
 
 public:
   loop();

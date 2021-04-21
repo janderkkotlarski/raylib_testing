@@ -1,6 +1,5 @@
 #include "loop.h"
 
-#include <chrono>
 #include <charconv>
 #include <iostream>
 
@@ -58,23 +57,52 @@ loop::loop()
 
 void loop::run()
 {
+  std::chrono::steady_clock::time_point time_1
+  { std::chrono::steady_clock::now() };
+
+  std::chrono::steady_clock::time_point time_2
+  { std::chrono::steady_clock::now() };
+
 
 
 
   while (!WindowShouldClose())            // Detect window close button or ESC key
   {
-    BeginDrawing();
-    {
-      ClearBackground(BLACK);
+    time_2 = std::chrono::steady_clock::now();
 
-      BeginMode3D(m_camera);
-        for (staroid &aster: m_stars)
-        { aster.display(); }
-      EndMode3D();
+    std::chrono::steady_clock::duration delta
+    { time_2 - time_1 };
+
+    time_1 = std::chrono::steady_clock::now();
+
+    const float fraction
+    { m_angle*float(delta.count())/1000000000.0f };
+
+    astral_mechanics(m_stars, m_aster_factor, fraction);
+
+    if (m_tick == 0)
+    {
+      BeginDrawing();
+      {
+        ClearBackground(BLACK);
+
+        BeginMode3D(m_camera);
+          for (staroid &aster: m_stars)
+          { aster.display(); }
+        EndMode3D();
+
+        DrawFPS(10, 10);
+      }
+      EndDrawing();
     }
-    EndDrawing();
+
+    ++m_tick;
+    m_tick %= m_tick_max;
   }
 }
+
+
+
 
 
 void looping()
