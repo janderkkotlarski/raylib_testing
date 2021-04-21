@@ -26,29 +26,44 @@
 #endif
 
 loop::loop()
-{}
-
-void loop::run()
 {
   SetConfigFlags(FLAG_MSAA_4X_HINT);  // Enable Multi Sampling Anti Aliasing 4x (if available)
   InitWindow(m_screen_width, m_screen_height, "STAROID");
 
-  /*
-  Camera camera
-  { 0 };
-  camera.position = m_cam_pos;    // Camera position
-  camera.target = m_cam_target;      // Camera looking at point
-  camera.up = m_cam_up;          // Camera up vector (rotation towards target)
-  camera.fovy = 45.0f;                                // Camera field-of-view Y
-  camera.type = CAMERA_PERSPECTIVE;                  // Camera mode type
-  */
+
+  m_camera.position = m_cam_pos;    // Camera position
+  m_camera.target = m_cam_target;      // Camera looking at point
+  m_camera.up = m_cam_up;          // Camera up vector (rotation towards target)
+  m_camera.fovy = 45.0f;                                // Camera field-of-view Y
+  m_camera.type = CAMERA_PERSPECTIVE;                  // Camera mode type
+
   m_stars = star_nursery(m_aster_factor);
+  stellarator(m_stars, m_gold);
+}
+
+void loop::run()
+{
+  m_lighting_shader = LoadShader("base_lighting.vs", "lighting.fs");
+
+  m_lighting_shader.locs[LOC_MATRIX_MODEL] =
+      GetShaderLocation(m_lighting_shader, "matModel");
+  m_lighting_shader.locs[LOC_VECTOR_VIEW] =
+      GetShaderLocation(m_lighting_shader, "viewPos");
+
+  Light light
+  { CreateLight(LIGHT_POINT, m_cam_pos, m_cam_target, WHITE, m_lighting_shader) };
+
 
   while (!WindowShouldClose())            // Detect window close button or ESC key
   {
     BeginDrawing();
     {
       ClearBackground(BLACK);
+
+      BeginMode3D(m_camera);
+        for (staroid &aster: m_stars)
+        { aster.display(); }
+      EndMode3D();
     }
     EndDrawing();
   }

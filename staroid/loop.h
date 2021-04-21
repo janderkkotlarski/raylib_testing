@@ -5,6 +5,7 @@
 
 #include "raylib.h"
 
+#include "rlights.h"
 
 #include "auronacci.h"
 #include "functions.h"
@@ -31,8 +32,8 @@ private:
   Vector3 m_cam_up
   { 0.0f, 1.0f, 0.0f };
 
-  // Camera m_camera
-  // { 0 };
+  Camera m_camera
+  { 0 };
 
   // Model m_star_model
   // { LoadModel("staroid.obj") };
@@ -50,6 +51,10 @@ private:
 
 
   std::vector <staroid> m_stars;
+
+  Shader m_lighting_shader;
+
+  // Light m_light;
 
   /*
   Shader m_lighting_shader
