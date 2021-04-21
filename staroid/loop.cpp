@@ -25,8 +25,37 @@
     #define GLSL_VERSION            100
 #endif
 
+loop::loop()
+{}
 
-void loop()
+void loop::run()
+{
+  SetConfigFlags(FLAG_MSAA_4X_HINT);  // Enable Multi Sampling Anti Aliasing 4x (if available)
+  InitWindow(m_screen_width, m_screen_height, "STAROID");
+
+  /*
+  Camera camera
+  { 0 };
+  camera.position = m_cam_pos;    // Camera position
+  camera.target = m_cam_target;      // Camera looking at point
+  camera.up = m_cam_up;          // Camera up vector (rotation towards target)
+  camera.fovy = 45.0f;                                // Camera field-of-view Y
+  camera.type = CAMERA_PERSPECTIVE;                  // Camera mode type
+  */
+  m_stars = star_nursery(m_aster_factor);
+
+  while (!WindowShouldClose())            // Detect window close button or ESC key
+  {
+    BeginDrawing();
+    {
+      ClearBackground(BLACK);
+    }
+    EndDrawing();
+  }
+}
+
+
+void looping()
 {
   auronacci gold;
 

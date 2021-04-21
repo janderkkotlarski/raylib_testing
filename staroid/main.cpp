@@ -2,7 +2,12 @@
 
 int main()
 {
-  loop();
+  loop looper;
+
+  looper.run();
+
+  // looping();
+
 
   return 0;
 }
