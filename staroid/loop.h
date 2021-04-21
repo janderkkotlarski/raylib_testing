@@ -5,8 +5,6 @@
 
 #include "raylib.h"
 
-#include "rlights.h"
-
 #include "auronacci.h"
 #include "functions.h"
 

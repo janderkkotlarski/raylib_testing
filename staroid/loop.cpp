@@ -30,6 +30,8 @@ loop::loop()
   SetConfigFlags(FLAG_MSAA_4X_HINT);  // Enable Multi Sampling Anti Aliasing 4x (if available)
   InitWindow(m_screen_width, m_screen_height, "STAROID");
 
+  SetTargetFPS(100);
+
 
   m_camera.position = m_cam_pos;    // Camera position
   m_camera.target = m_cam_target;      // Camera looking at point
@@ -39,10 +41,7 @@ loop::loop()
 
   m_stars = star_nursery(m_aster_factor);
   stellarator(m_stars, m_gold);
-}
 
-void loop::run()
-{
   m_lighting_shader = LoadShader("base_lighting.vs", "lighting.fs");
 
   m_lighting_shader.locs[LOC_MATRIX_MODEL] =
@@ -52,6 +51,14 @@ void loop::run()
 
   Light light
   { CreateLight(LIGHT_POINT, m_cam_pos, m_cam_target, WHITE, m_lighting_shader) };
+
+  for (staroid &aster: m_stars)
+  { aster.set_shading(m_lighting_shader); }
+}
+
+void loop::run()
+{
+
 
 
   while (!WindowShouldClose())            // Detect window close button or ESC key
