@@ -16,8 +16,6 @@
 #include "disk.h"
 
 
-
-
 #if defined(PLATFORM_DESKTOP)
     #define GLSL_VERSION            330
 #else   // PLATFORM_RPI, PLATFORM_ANDROID, PLATFORM_WEB
@@ -62,8 +60,6 @@ void loop::run()
 
   std::chrono::steady_clock::time_point time_2
   { std::chrono::steady_clock::now() };
-
-
 
 
   while (!WindowShouldClose())            // Detect window close button or ESC key
@@ -263,14 +259,20 @@ void looping()
         ClearBackground(BLACK);
 
         BeginTextureMode(target);
+        {
           ClearBackground(BLACK);
+        }
         EndTextureMode();
 
         BeginTextureMode(target);
+        {
           BeginMode3D(camera);
+          {
             for (staroid &aster: stars)
             { aster.display(); }
+          }
           EndMode3D();
+        }
         EndTextureMode();
 
         BeginShaderMode(post_shader);
