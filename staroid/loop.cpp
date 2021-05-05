@@ -103,30 +103,6 @@ void loop::run()
         ClearBackground(BLACK);
 
 
-        BeginTextureMode(render_area_2);
-        {
-          ClearBackground(BLACK);
-
-          BeginMode3D(m_camera);
-          {
-            for (unsigned count { 0 }; count < m_stars_2.size(); ++count)
-            {
-              m_stars_2[count].display();
-            }
-          }
-          EndMode3D();
-        }
-        EndTextureMode();
-
-        BeginShaderMode(m_gray_shader);
-        {
-          // NOTE: Render texture must be y-flipped due to default OpenGL coordinates (left-bottom)
-
-          DrawTextureRec(render_area_2.texture, (Rectangle){ 0, 0, (float)render_area_2.texture.width,
-                         (float)-render_area_2.texture.height }, (Vector2){ 0, 0 }, WHITE);
-        }
-        EndShaderMode();
-
         BeginTextureMode(render_area);
         {
           ClearBackground(BLACK);
@@ -142,12 +118,23 @@ void loop::run()
         }
         EndTextureMode();
 
+
+
+        BeginShaderMode(m_gray_shader);
+        {
+          // NOTE: Render texture must be y-flipped due to default OpenGL coordinates (left-bottom)
+
+          DrawTextureRec(render_area.texture, (Rectangle){ 0, 0, (float)render_area.texture.width,
+                         (float)-render_area.texture.height }, (Vector2){ 0, 0 }, Color{255, 255, 255, 255});
+        }
+        EndShaderMode();
+
         BeginShaderMode(m_bloom_shader);
         {
           // NOTE: Render texture must be y-flipped due to default OpenGL coordinates (left-bottom)
 
-          // DrawTextureRec(render_area.texture, (Rectangle){ 0, 0, (float)render_area.texture.width,
-          //                (float)-render_area.texture.height }, (Vector2){ 0, 0 }, Color{255, 255, 255, 0});
+          DrawTextureRec(render_area.texture, (Rectangle){ 0, 0, (float)render_area.texture.width,
+                         (float)-render_area.texture.height }, (Vector2){ 0, 0 }, Color{255, 255, 255, 0});
         }
         EndShaderMode();
 
