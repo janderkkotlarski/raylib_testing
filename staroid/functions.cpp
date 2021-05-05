@@ -136,12 +136,15 @@ noexcept
   const int star_max
   { 200 };
 
+  const int star_types
+  { 2 };
+
   const std::vector <Color> pastels
   { pastelbow() };
 
   std::vector <staroid> stars;
 
-  for (int count{ 0 }; count < star_max; ++count)
+  for (int count{ 0 }; count < star_max/star_types; ++count)
   {
     staroid aster;
 

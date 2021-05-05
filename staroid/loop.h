@@ -51,16 +51,15 @@ private:
   const std::vector <Color> m_pastels
   { pastelbow() };
 
-
-
   const float m_aster_factor
   { 0.015f };
-
-
 
   std::vector <staroid> m_stars;
 
   Shader m_lighting_shader;
+
+  RenderTexture2D m_render_area
+  { LoadRenderTexture(m_screen_width, m_screen_height) };
 
   // Light m_light;
 

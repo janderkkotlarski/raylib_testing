@@ -51,6 +51,8 @@ loop::loop()
 
   for (staroid &aster: m_stars)
   { aster.set_shading(m_lighting_shader); }
+
+
 }
 
 void loop::run()
@@ -82,10 +84,19 @@ void loop::run()
       {
         ClearBackground(BLACK);
 
-        BeginMode3D(m_camera);
-          for (staroid &aster: m_stars)
-          { aster.display(); }
-        EndMode3D();
+        BeginTextureMode(m_render_area);
+        {
+          BeginMode3D(m_camera);
+          {
+            for (unsigned count { 0 }; count < m_stars.size(); ++count)
+            {
+              if (count % 2 == 0)
+              { m_stars[count].display(); }
+            }
+          }
+          EndMode3D();
+        }
+        EndTextureMode();
 
         DrawFPS(10, 10);
       }
