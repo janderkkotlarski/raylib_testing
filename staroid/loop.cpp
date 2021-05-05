@@ -52,7 +52,7 @@ loop::loop()
   for (staroid &aster: m_stars)
   { aster.set_shading(m_lighting_shader); }
 
-
+  m_bloom_shader = LoadShader(0, "bloom.fs");
 }
 
 void loop::run()
@@ -62,6 +62,9 @@ void loop::run()
 
   std::chrono::steady_clock::time_point time_2
   { std::chrono::steady_clock::now() };
+
+  RenderTexture2D render_area
+  { LoadRenderTexture(m_screen_width, m_screen_height) };
 
 
   while (!WindowShouldClose())            // Detect window close button or ESC key
@@ -84,19 +87,29 @@ void loop::run()
       {
         ClearBackground(BLACK);
 
-        BeginTextureMode(m_render_area);
+        BeginTextureMode(render_area);
         {
+          ClearBackground(BLACK);
+
           BeginMode3D(m_camera);
           {
             for (unsigned count { 0 }; count < m_stars.size(); ++count)
             {
-              if (count % 2 == 0)
+              if (true)
               { m_stars[count].display(); }
             }
           }
           EndMode3D();
         }
         EndTextureMode();
+
+        BeginShaderMode(m_bloom_shader);
+        {
+          // NOTE: Render texture must be y-flipped due to default OpenGL coordinates (left-bottom)
+
+          DrawTextureRec(render_area.texture, (Rectangle){ 0, 0, (float)render_area.texture.width, (float)-render_area.texture.height }, (Vector2){ 0, 0 }, WHITE);
+        }
+        EndShaderMode();
 
         DrawFPS(10, 10);
       }

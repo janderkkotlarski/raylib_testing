@@ -58,8 +58,7 @@ private:
 
   Shader m_lighting_shader;
 
-  RenderTexture2D m_render_area
-  { LoadRenderTexture(m_screen_width, m_screen_height) };
+  Shader m_bloom_shader;
 
   // Light m_light;
 
