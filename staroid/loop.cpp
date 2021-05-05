@@ -36,8 +36,11 @@ loop::loop()
   m_camera.fovy = 45.0f;                                // Camera field-of-view Y
   m_camera.type = CAMERA_PERSPECTIVE;                  // Camera mode type
 
-  m_stars = star_nursery(m_aster_factor);
-  stellarator(m_stars, m_gold);
+  m_stars_1 = star_nursery(m_aster_factor);
+  stellarator(m_stars_1, m_gold);
+
+  m_stars_2 = star_nursery(m_aster_factor);
+  stellarator(m_stars_2, m_gold);
 
   m_lighting_shader = LoadShader("base_lighting.vs", "lighting.fs");
 
@@ -49,10 +52,15 @@ loop::loop()
   Light light
   { CreateLight(LIGHT_POINT, m_cam_pos, m_cam_target, WHITE, m_lighting_shader) };
 
-  for (staroid &aster: m_stars)
+  for (staroid &aster: m_stars_1)
+  { aster.set_shading(m_lighting_shader); }
+
+  for (staroid &aster: m_stars_2)
   { aster.set_shading(m_lighting_shader); }
 
   m_bloom_shader = LoadShader(0, "bloom.fs");
+
+  m_gray_shader = LoadShader(0, "grayscale.fs");
 }
 
 void loop::run()
@@ -64,6 +72,9 @@ void loop::run()
   { std::chrono::steady_clock::now() };
 
   RenderTexture2D render_area
+  { LoadRenderTexture(m_screen_width, m_screen_height) };
+
+  RenderTexture2D render_area_2
   { LoadRenderTexture(m_screen_width, m_screen_height) };
 
 
@@ -79,13 +90,42 @@ void loop::run()
     const float fraction
     { m_angle*float(delta.count())/1000000000.0f };
 
-    astral_mechanics(m_stars, m_aster_factor, fraction);
+    astral_mechanics(m_stars_1, m_aster_factor, fraction);
+
+    astral_mechanics(m_stars_2, m_aster_factor, fraction);
 
     if (m_tick == 0)
     {
       BeginDrawing();
       {
+
+
         ClearBackground(BLACK);
+
+
+        BeginTextureMode(render_area_2);
+        {
+          ClearBackground(BLACK);
+
+          BeginMode3D(m_camera);
+          {
+            for (unsigned count { 0 }; count < m_stars_2.size(); ++count)
+            {
+              m_stars_2[count].display();
+            }
+          }
+          EndMode3D();
+        }
+        EndTextureMode();
+
+        BeginShaderMode(m_gray_shader);
+        {
+          // NOTE: Render texture must be y-flipped due to default OpenGL coordinates (left-bottom)
+
+          DrawTextureRec(render_area_2.texture, (Rectangle){ 0, 0, (float)render_area_2.texture.width,
+                         (float)-render_area_2.texture.height }, (Vector2){ 0, 0 }, WHITE);
+        }
+        EndShaderMode();
 
         BeginTextureMode(render_area);
         {
@@ -93,10 +133,9 @@ void loop::run()
 
           BeginMode3D(m_camera);
           {
-            for (unsigned count { 0 }; count < m_stars.size(); ++count)
+            for (unsigned count { 0 }; count < m_stars_1.size(); ++count)
             {
-              if (true)
-              { m_stars[count].display(); }
+              m_stars_1[count].display();
             }
           }
           EndMode3D();
@@ -107,9 +146,12 @@ void loop::run()
         {
           // NOTE: Render texture must be y-flipped due to default OpenGL coordinates (left-bottom)
 
-          DrawTextureRec(render_area.texture, (Rectangle){ 0, 0, (float)render_area.texture.width, (float)-render_area.texture.height }, (Vector2){ 0, 0 }, WHITE);
+          // DrawTextureRec(render_area.texture, (Rectangle){ 0, 0, (float)render_area.texture.width,
+          //                (float)-render_area.texture.height }, (Vector2){ 0, 0 }, Color{255, 255, 255, 0});
         }
         EndShaderMode();
+
+
 
         DrawFPS(10, 10);
       }

@@ -54,11 +54,15 @@ private:
   const float m_aster_factor
   { 0.015f };
 
-  std::vector <staroid> m_stars;
+  std::vector <staroid> m_stars_1;
+
+  std::vector <staroid> m_stars_2;
 
   Shader m_lighting_shader;
 
   Shader m_bloom_shader;
+
+  Shader m_gray_shader;
 
   // Light m_light;
 
