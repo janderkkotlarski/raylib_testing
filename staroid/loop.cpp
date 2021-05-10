@@ -43,6 +43,7 @@ loop::loop()
   stellarator(m_stars_2, m_gold);
 
   m_lighting_shader = LoadShader("base_lighting.vs", "lighting.fs");
+  // LoadShader("base_lighting.vs", "lighting.fs");
 
   m_lighting_shader.locs[LOC_MATRIX_MODEL] =
       GetShaderLocation(m_lighting_shader, "matModel");
@@ -118,6 +119,18 @@ void loop::run()
         }
         EndTextureMode();
 
+        /*
+
+        BeginShaderMode(m_gray_shader);
+        {
+          // NOTE: Render texture must be y-flipped due to default OpenGL coordinates (left-bottom)
+
+          DrawTextureRec(render_area.texture, (Rectangle){ 0, 0, (float)render_area.texture.width,
+                         (float)-render_area.texture.height }, (Vector2){ 0, 0 }, Color{255, 255, 255, 255});
+        }
+        EndShaderMode();
+
+        */
 
 
         BeginShaderMode(m_gray_shader);
@@ -129,14 +142,15 @@ void loop::run()
         }
         EndShaderMode();
 
-        BeginShaderMode(m_bloom_shader);
-        {
-          // NOTE: Render texture must be y-flipped due to default OpenGL coordinates (left-bottom)
 
-          DrawTextureRec(render_area.texture, (Rectangle){ 0, 0, (float)render_area.texture.width,
-                         (float)-render_area.texture.height }, (Vector2){ 0, 0 }, Color{255, 255, 255, 0});
+        BeginMode3D(m_camera);
+        {
+          for (unsigned count { 0 }; count < m_stars_1.size(); ++count)
+          {
+            // m_stars_2[count].display();
+          }
         }
-        EndShaderMode();
+        EndMode3D();
 
 
 
@@ -321,8 +335,7 @@ void looping()
         {
           BeginMode3D(camera);
           {
-            for (staroid &aster: stars)
-            { aster.display(); }
+
           }
           EndMode3D();
         }
@@ -336,7 +349,10 @@ void looping()
         }
         EndShaderMode();
 
-        BeginMode3D(camera);
+        BeginMode3D(camera);        
+          for (staroid &aster: stars)
+          { aster.display(); }
+
           circle.display();
         EndMode3D();
 
