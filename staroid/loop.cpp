@@ -78,6 +78,9 @@ void loop::run()
   RenderTexture2D render_area_2
   { LoadRenderTexture(m_screen_width, m_screen_height) };
 
+  RenderTexture2D render_area_3
+  { LoadRenderTexture(m_screen_width, m_screen_height) };
+
 
   while (!WindowShouldClose())            // Detect window close button or ESC key
   {
@@ -119,28 +122,57 @@ void loop::run()
         }
         EndTextureMode();
 
-        /*
-
         BeginShaderMode(m_gray_shader);
         {
           // NOTE: Render texture must be y-flipped due to default OpenGL coordinates (left-bottom)
 
-          DrawTextureRec(render_area.texture, (Rectangle){ 0, 0, (float)render_area.texture.width,
-                         (float)-render_area.texture.height }, (Vector2){ 0, 0 }, Color{255, 255, 255, 255});
+          DrawTextureRec(render_area.texture, (Rectangle){ 0, 0, 0.33f*(float)render_area.texture.width,
+                         (float)-render_area.texture.height }, (Vector2){ 0, 0 }, WHITE);
         }
         EndShaderMode();
 
-        */
 
 
-        BeginShaderMode(m_gray_shader);
+        BeginTextureMode(render_area_2);
+        {
+          ClearBackground(BLACK);
+
+          BeginMode3D(m_camera);
+          {
+            for (unsigned count { 0 }; count < m_stars_1.size(); ++count)
+            { m_stars_1[count].display(); }
+
+            for (unsigned count { 0 }; count < m_stars_2.size(); ++count)
+            { m_stars_2[count].display(); }
+          }
+          EndMode3D();
+        }
+        EndTextureMode();
+
+        BeginShaderMode(m_bloom_shader);
         {
           // NOTE: Render texture must be y-flipped due to default OpenGL coordinates (left-bottom)
 
-          DrawTextureRec(render_area.texture, (Rectangle){ 0, 0, (float)render_area.texture.width,
-                         (float)-render_area.texture.height }, (Vector2){ 0, 0 }, Color{255, 255, 255, 255});
+          DrawTextureRec(render_area_2.texture, (Rectangle){ 0.33f*(float)render_area_2.texture.width, 0, 0.67f*(float)render_area_2.texture.width,
+                         (float)-render_area_2.texture.height }, (Vector2){ 0.33f*(float)render_area_2.texture.width, 0 }, WHITE);
         }
         EndShaderMode();
+
+        BeginTextureMode(render_area_3);
+        {
+          ClearBackground(BLACK);
+
+          BeginMode3D(m_camera);
+          {
+            for (unsigned count { 0 }; count < m_stars_1.size(); ++count)
+            { m_stars_1[count].display(); }
+          }
+          EndMode3D();
+        }
+        EndTextureMode();
+
+        DrawTextureRec(render_area_3.texture, (Rectangle){ 0.67f*(float)render_area_3.texture.width, 0, 1.00f*(float)render_area_3.texture.width,
+                       (float)-render_area_3.texture.height }, (Vector2){ 0.67f*(float)render_area_3.texture.width, 0 }, WHITE);
 
 
         BeginMode3D(m_camera);
